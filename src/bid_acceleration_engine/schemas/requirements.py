@@ -6,12 +6,29 @@ from uuid import UUID
 from pydantic import BaseModel, ConfigDict
 
 
-class RequirementType(StrEnum):
-    """Classification of a requirement."""
+class RequirementCategory(StrEnum):
+    """Category of a requirement."""
 
-    MANDATORY = "mandatory"
-    OPTIONAL = "optional"
-    INFORMATIONAL = "informational"
+    TECHNICAL = "Technical"
+    SECURITY = "Security"
+    COMPLIANCE = "Compliance"
+    PERFORMANCE = "Performance"
+
+
+class RequirementPriority(StrEnum):
+    """Priority level of a requirement."""
+
+    HIGH = "High"
+    MEDIUM = "Medium"
+    LOW = "Low"
+
+
+class EstimatedComplexity(StrEnum):
+    """Complexity estimate for implementing a requirement."""
+
+    SIMPLE = "Simple"
+    MODERATE = "Moderate"
+    COMPLEX = "Complex"
 
 
 class ExtractedRequirement(BaseModel):
@@ -20,8 +37,10 @@ class ExtractedRequirement(BaseModel):
     model_config = ConfigDict(extra="forbid")
 
     id: UUID
-    bid_id: UUID
-    requirement_type: RequirementType
-    raw_text: str
-    section_reference: str | None
-    keywords: list[str]
+    source_text: str
+    category: RequirementCategory
+    priority: RequirementPriority
+    estimated_complexity: EstimatedComplexity
+    mandatory: bool
+    section_heading: str
+    source_location: str | None = None
