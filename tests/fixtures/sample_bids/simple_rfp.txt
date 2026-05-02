@@ -1,0 +1,47 @@
+REQUEST FOR PROPOSAL: ENTERPRISE CLOUD INFRASTRUCTURE MODERNIZATION
+
+Issued by: General Services Administration (GSA), Office of IT Services
+Solicitation Number: GSA-2026-001
+Release Date: March 1, 2026
+Closing Date: April 15, 2026
+Due: 2 PM Eastern Time
+
+SECTION 1: OVERVIEW
+
+The General Services Administration seeks qualified vendors to design, implement, and manage a comprehensive enterprise cloud infrastructure modernization initiative. The successful contractor will migrate legacy on-premises systems to a hybrid cloud environment, leveraging industry-standard platforms and best practices.
+
+This engagement requires deep expertise in cloud architecture, security, compliance, and change management. The selected vendor will work directly with GSA leadership to transform IT operations and improve service delivery across all agency divisions.
+
+Estimated project duration: 18-24 months
+Budget ceiling: $5 million
+
+SECTION 2: MANDATORY REQUIREMENTS
+
+All proposals must address the following mandatory requirements:
+- Cloud platform selection (AWS, Azure, or GCP) with detailed justification
+- Security architecture meeting FedRAMP requirements
+- Data migration strategy for 200+ on-premises applications
+- Staff augmentation for 12+ cloud engineers
+- 24/7 managed services support model
+
+SECTION 3: OPTIONAL REQUIREMENTS
+
+Vendors are encouraged to propose enhancements including:
+- Cost optimization consulting
+- Advanced analytics and monitoring
+- Disaster recovery and business continuity planning
+- Training and knowledge transfer programs
+
+SECTION 4: EVALUATION CRITERIA
+
+Proposals will be evaluated based on:
+1. Technical approach and feasibility (40 points)
+2. Vendor qualifications and past performance (30 points)
+3. Cost and pricing structure (20 points)
+4. Innovation and value-added services (10 points)
+
+SECTION 5: SUBMISSION INSTRUCTIONS
+
+Submit complete proposals including technical volume, pricing volume, and company information by the closing date. Late submissions will not be accepted.
+
+For questions contact: procurement@gsa.gov

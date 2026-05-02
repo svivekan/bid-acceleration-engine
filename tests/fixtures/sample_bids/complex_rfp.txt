@@ -1,0 +1,67 @@
+RFP - DATA ANALYTICS PLATFORM DEVELOPMENT
+
+Contract Agency: Department of Energy (DOE) - Energy Efficiency & Renewable Energy (EERE)
+
+*** KEY DATES ***
+Posted: 03-06-2026 (March 6, 2026)
+Closing: 15 April, 2026 at 23:59 UTC
+Questions Due: April 1st, 2026
+
+I. BACKGROUND AND PURPOSE
+
+The Department of Energy seeks to build a next-generation data analytics platform supporting renewable energy research.
+
+II. SCOPE OF WORK
+
+A. Phase 1: Foundation (Q2-Q3 2026)
+   - Requirements gathering
+   - Architecture design
+   - Technology selection
+
+   B. Phase 2: Development (Q4 2026 - Q2 2027)
+   - MVP development
+   - Testing and QA
+   - Security hardening
+
+   C. Phase 3: Deployment (Q3-Q4 2027)
+   - Production deployment
+   - Training
+   - Operations handoff
+
+III. CONTRACTOR QUALIFICATIONS
+
+Successful contractors must demonstrate:
+1. 5+ years building large-scale data platforms
+2. Experience with real-time analytics at scale
+3. Security clearance eligibility or current clearance
+4. Team of 8-12 engineers
+
+IV. TECHNICAL REQUIREMENTS
+
+MANDATORY:
+- Support for 100+ concurrent users
+- Query response time < 5 seconds at P95
+- Support for both batch and streaming data
+- Compliance with NIST cybersecurity framework
+
+OPTIONAL:
+- Machine learning capabilities
+- Advanced visualization dashboards
+- Custom reporting engine
+
+v. PRICING AND CONTRACT TERMS
+
+Contract Type: Cost-Plus-Fixed-Fee (CPFF)
+Period of Performance: 24 months
+Maximum Obligation: $8.5 million (Government estimate)
+
+VI. PROPOSAL SUBMISSION
+
+All proposals must be received electronically no later than April 15, 2026 @ 11:59 PM EST.
+
+Evaluation will be based on:
+* Technical merit (45%)
+* Past performance (30%)
+* Cost reasonableness (25%)
+
+Questions? Contact RFP.Manager@energy.gov before April 1st, 2026.
