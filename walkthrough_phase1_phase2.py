@@ -31,6 +31,10 @@ def walkthrough(bid_file_path: str) -> None:
     print(f"📄 Input bid file: {bid_path.name}")
     print(f"   Size: {bid_path.stat().st_size:,} bytes\n")
 
+    # Create results directory
+    results_dir = Path("results")
+    results_dir.mkdir(exist_ok=True)
+
     with TemporaryDirectory() as tmp_dir:
         tmp_path = Path(tmp_dir)
 
@@ -143,27 +147,30 @@ def walkthrough(bid_file_path: str) -> None:
             print()
 
         # ======================================================================
-        # Export results
+        # Export results to persistent directory
         # ======================================================================
         print("=" * 80)
         print("EXPORTING RESULTS")
         print("=" * 80 + "\n")
 
+        # Use bid filename as prefix for results
+        bid_stem = bid_path.stem
+        timestamp = __import__("datetime").datetime.now().strftime("%Y%m%d_%H%M%S")
+
         # Export Phase 1 output
-        phase1_export = tmp_path / "phase1_output.json"
+        phase1_export = results_dir / f"{bid_stem}_{timestamp}_phase1_output.json"
         with open(phase1_export, "w") as f:
             json.dump(result1.model_dump(mode="json"), f, indent=2, default=str)
         print(f"✅ Phase 1 output: {phase1_export}")
 
         # Export Phase 2 output
-        phase2_export = tmp_path / "phase2_output.json"
+        phase2_export = results_dir / f"{bid_stem}_{timestamp}_phase2_output.json"
         with open(phase2_export, "w") as f:
             json.dump(result2.model_dump(mode="json"), f, indent=2, default=str)
         print(f"✅ Phase 2 output: {phase2_export}")
 
-        # Show file paths (can be accessed in /tmp)
-        print(f"\n📁 Results saved to: {tmp_path}")
-        print(f"   (Note: Files are in temporary directory and will be cleaned up)")
+        # Show file paths
+        print(f"\n📁 Results saved to: {results_dir.absolute()}")
 
         print("\n" + "=" * 80)
         print("✅ WALKTHROUGH COMPLETE")
