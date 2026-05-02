@@ -1,5 +1,6 @@
 """Integration tests for BidIntakeAgent."""
 
+from datetime import datetime
 from pathlib import Path
 
 import pytest
@@ -13,6 +14,19 @@ from bid_acceleration_engine.schemas.results import AgentStatus
 def agent():
     """Create a BidIntakeAgent for testing."""
     return BidIntakeAgent("bid_intake_agent")
+
+
+@pytest.fixture
+def uk_rfp_fixtures():
+    """Provide paths to all UK RFP test fixtures."""
+    fixtures_dir = Path(__file__).parent.parent / "fixtures" / "sample_bids"
+    return {
+        "local_council": fixtures_dir / "uk_local_council_data_analytics.txt",
+        "nhs_trust": fixtures_dir / "uk_nhs_trust_population_health.txt",
+        "transport": fixtures_dir / "uk_transport_network_data_system.txt",
+        "university": fixtures_dir / "uk_university_research_data_repository.txt",
+        "water_authority": fixtures_dir / "uk_water_authority_environmental_data.txt",
+    }
 
 
 def test_bid_intake_agent_happy_path(agent, sample_bid_path, tmp_output_dir):
@@ -188,3 +202,127 @@ def test_bid_intake_agent_with_minimal_bid(agent, tmp_output_dir):
     assert doc.metadata.issuer is None
     assert doc.metadata.due_date is None
     assert doc.metadata.word_count == 5  # "Minimal", "Bid", "Some", "content", "here"
+
+
+@pytest.mark.parametrize(
+    "fixture_name,fixture_path",
+    [
+        ("local_council", "uk_local_council_data_analytics.txt"),
+        ("nhs_trust", "uk_nhs_trust_population_health.txt"),
+        ("transport", "uk_transport_network_data_system.txt"),
+        ("university", "uk_university_research_data_repository.txt"),
+        ("water_authority", "uk_water_authority_environmental_data.txt"),
+    ],
+)
+def test_bid_intake_agent_parses_uk_rfps(agent, tmp_output_dir, fixture_name, fixture_path):
+    """Test that agent successfully parses all 5 UK RFP fixtures."""
+    fixtures_dir = Path(__file__).parent.parent / "fixtures" / "sample_bids"
+    rfp_path = fixtures_dir / fixture_path
+    output_path = tmp_output_dir / f"output_{fixture_name}.json"
+
+    # Verify fixture exists
+    assert rfp_path.exists(), f"Fixture {fixture_path} not found"
+
+    # Run agent
+    result = agent.run(rfp_path, output_path)
+
+    # Verify success
+    assert result.status == AgentStatus.SUCCESS, f"Failed to parse {fixture_name}: {result.error_message}"
+    assert result.output is not None
+    assert isinstance(result.output, BidDocument)
+
+    # Verify basic document properties
+    doc = result.output
+    assert doc.id is not None
+    assert doc.metadata.title != "", f"{fixture_name}: title not extracted"
+    assert doc.metadata.word_count > 100, f"{fixture_name}: word count too low"
+    assert len(doc.sections) > 0, f"{fixture_name}: no sections extracted"
+    assert doc.raw_text != "", f"{fixture_name}: raw text empty"
+
+    # Verify JSON output
+    assert output_path.exists(), f"Output JSON not created for {fixture_name}"
+
+
+@pytest.mark.parametrize(
+    "fixture_name,fixture_path,expected_issuer_keyword",
+    [
+        ("local_council", "uk_local_council_data_analytics.txt", "Metropolitan"),
+        ("nhs_trust", "uk_nhs_trust_population_health.txt", "NHS"),
+        ("transport", "uk_transport_network_data_system.txt", "Transport"),
+        ("university", "uk_university_research_data_repository.txt", "Universities"),
+        ("water_authority", "uk_water_authority_environmental_data.txt", "Water"),
+    ],
+)
+def test_bid_intake_agent_extracts_issuer_from_uk_rfps(
+    agent, tmp_output_dir, fixture_name, fixture_path, expected_issuer_keyword
+):
+    """Test that issuer is correctly extracted from UK RFP fixtures."""
+    fixtures_dir = Path(__file__).parent.parent / "fixtures" / "sample_bids"
+    rfp_path = fixtures_dir / fixture_path
+    output_path = tmp_output_dir / f"output_{fixture_name}.json"
+
+    result = agent.run(rfp_path, output_path)
+
+    assert result.status == AgentStatus.SUCCESS
+    doc = result.output
+    assert doc.metadata.issuer is not None, f"{fixture_name}: issuer not extracted"
+    assert expected_issuer_keyword in doc.metadata.issuer, (
+        f"{fixture_name}: expected '{expected_issuer_keyword}' in issuer, "
+        f"got '{doc.metadata.issuer}'"
+    )
+
+
+@pytest.mark.parametrize(
+    "fixture_name,fixture_path",
+    [
+        ("local_council", "uk_local_council_data_analytics.txt"),
+        ("nhs_trust", "uk_nhs_trust_population_health.txt"),
+        ("transport", "uk_transport_network_data_system.txt"),
+        ("university", "uk_university_research_data_repository.txt"),
+        ("water_authority", "uk_water_authority_environmental_data.txt"),
+    ],
+)
+def test_bid_intake_agent_extracts_dates_from_uk_rfps(agent, tmp_output_dir, fixture_name, fixture_path):
+    """Test that closing dates are extracted from UK RFP fixtures."""
+    fixtures_dir = Path(__file__).parent.parent / "fixtures" / "sample_bids"
+    rfp_path = fixtures_dir / fixture_path
+    output_path = tmp_output_dir / f"output_{fixture_name}.json"
+
+    result = agent.run(rfp_path, output_path)
+
+    assert result.status == AgentStatus.SUCCESS
+    doc = result.output
+    assert doc.metadata.due_date is not None, f"{fixture_name}: due_date not extracted"
+    assert isinstance(doc.metadata.due_date, datetime), f"{fixture_name}: due_date not a datetime"
+    assert doc.metadata.due_date.year == 2026, f"{fixture_name}: expected year 2026"
+
+
+@pytest.mark.parametrize(
+    "fixture_name,fixture_path",
+    [
+        ("local_council", "uk_local_council_data_analytics.txt"),
+        ("nhs_trust", "uk_nhs_trust_population_health.txt"),
+        ("transport", "uk_transport_network_data_system.txt"),
+        ("university", "uk_university_research_data_repository.txt"),
+        ("water_authority", "uk_water_authority_environmental_data.txt"),
+    ],
+)
+def test_bid_intake_agent_uk_rfps_are_json_serializable(agent, tmp_output_dir, fixture_name, fixture_path):
+    """Test that parsed UK RFPs can be serialized and deserialized from JSON."""
+    fixtures_dir = Path(__file__).parent.parent / "fixtures" / "sample_bids"
+    rfp_path = fixtures_dir / fixture_path
+    output_path = tmp_output_dir / f"output_{fixture_name}.json"
+
+    result = agent.run(rfp_path, output_path)
+    assert result.status == AgentStatus.SUCCESS
+
+    # Read JSON back and verify round-trip
+    json_content = output_path.read_text()
+    recovered_doc = BidDocument.model_validate_json(json_content)
+
+    original_doc = result.output
+    assert recovered_doc.id == original_doc.id
+    assert recovered_doc.metadata.title == original_doc.metadata.title
+    assert recovered_doc.metadata.issuer == original_doc.metadata.issuer
+    assert recovered_doc.metadata.due_date == original_doc.metadata.due_date
+    assert len(recovered_doc.sections) == len(original_doc.sections)

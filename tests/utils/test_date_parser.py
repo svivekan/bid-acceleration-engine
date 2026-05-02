@@ -83,3 +83,29 @@ def test_parse_leap_year():
     """Test parsing leap year date."""
     result = parse_date_string("2024-02-29")
     assert result == date(2024, 2, 29)
+
+
+def test_parse_uk_format_day_month_year():
+    """Test parsing UK format 'Day Month Year' (e.g., '15 May 2026')."""
+    result = parse_date_string("15 May 2026")
+    assert result == date(2026, 5, 15)
+
+
+def test_parse_uk_format_abbreviated_month():
+    """Test parsing UK format with abbreviated month (e.g., '15 May 2026')."""
+    result = parse_date_string("10 January 2026")
+    assert result == date(2026, 1, 10)
+
+
+def test_parse_uk_format_various_months():
+    """Test parsing UK format with various months."""
+    test_cases = [
+        ("1 March 2026", date(2026, 3, 1)),
+        ("30 April 2026", date(2026, 4, 30)),
+        ("25 December 2026", date(2026, 12, 25)),
+        ("2 July 2026", date(2026, 7, 2)),
+    ]
+
+    for input_str, expected in test_cases:
+        result = parse_date_string(input_str)
+        assert result == expected, f"Failed for {input_str}"

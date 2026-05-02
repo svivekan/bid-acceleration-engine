@@ -75,9 +75,9 @@ def extract_due_date(text: str) -> datetime | None:
         match = re.search(pattern, text, re.IGNORECASE)
         if match:
             date_str = match.group(1).strip()
-            # Remove time component if present (e.g., "April 15, 2026 at 2 PM")
+            # Remove time component if present (e.g., "April 15, 2026 at 2 PM" or "20 May 2026 16:00")
             date_str = re.sub(r"\s+at\s+.+", "", date_str, flags=re.IGNORECASE)
-            date_str = re.sub(r"\s+\d{1,2}:\d{2}.+", "", date_str)
+            date_str = re.sub(r"\s+\d{1,2}:\d{2}.*$", "", date_str)
 
             parsed_date = parse_date_string(date_str)
             if parsed_date:
