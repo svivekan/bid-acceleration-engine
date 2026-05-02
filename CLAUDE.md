@@ -4,7 +4,9 @@
 
 A local-first AI pipeline for accelerating government and enterprise bid responses. The system chains discrete agents, each responsible for a stage of bid analysis and response generation.
 
-**Current Phase:** MVP implementation of `bid_intake_agent` (Phase 1)
+**Current Phase:** Phase 2 - Requirement Extraction Agent
+
+**Architecture:** 6-agent pipeline, all phases local-first (no external APIs)
 
 ## Tech Stack
 
@@ -130,12 +132,14 @@ Functions in `utils/` have no side effects and no imports from `agents/`:
 - `file_io.read_text_file(path: Path) -> str`
 - `date_parser.parse_date_string(raw: str) -> date | None`
 
-### 5. Local-First, No External APIs (Phase 1)
+### 5. Local-First, No External APIs (All Phases)
 
 - No network calls
+- No external APIs (including Claude API, OpenAI, etc.)
 - No external ML/AI services
 - All processing in-memory on local machine
-- Future agents will integrate LLMs, but Phase 1 is pure Python
+- All 6 agents use pure Python with rule-based logic
+- Claude Pro subscription used only for consulting during development, not for runtime
 
 ## Testing Strategy
 
@@ -184,9 +188,11 @@ uv run pytest tests/agents/test_bid_intake_agent.py::test_happy_path -v
 
 ## Notes for Claude
 
-- **Keep Phase 1 intentionally simple:** MVP is parsing only, no LLM calls
+- **Local-first principle:** All 6 agents must work entirely offline, no external APIs under any circumstances
+- **Keep implementation intentionally focused:** Each agent does one thing well, no over-engineering
 - **Validate Pydantic generics early:** `AgentResult[T]` must work before building on top
-- **Mock nothing in Phase 1 tests:** Use real temp files and pytest fixtures
+- **Mock nothing in tests:** Use real temp files and pytest fixtures
 - **One commit = one complete feature:** Don't leave tests without code or code without tests
 - **Prefer explicit over implicit:** Type hints, docstrings, and clear variable names
 - **Avoid over-engineering:** No abstract base classes beyond what's documented, no premature refactoring
+- **Use Claude Pro subscription only for development guidance:** Never call APIs from running code

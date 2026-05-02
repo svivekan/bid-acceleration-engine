@@ -256,12 +256,12 @@ def test_spec_low_priority_for_optional(requirement_extraction_agent, parsed_bid
 
 
 # ============================================================================
-# SPEC CRITERION 5: Estimate Complexity
+# SPEC CRITERION 5: Estimate Complexity (Local Rule-Based)
 # ============================================================================
 
 
 def test_spec_assigns_complexity_to_all(requirement_extraction_agent, parsed_bid_documents):
-    """Spec 5: All requirements must have complexity estimated."""
+    """Spec 5: All requirements must have complexity estimated (local rule-based)."""
     bid_doc = parsed_bid_documents["local_council"]
     result = requirement_extraction_agent.run(bid_doc)
 
@@ -289,7 +289,7 @@ def test_spec_simple_for_straightforward_requirements(requirement_extraction_age
 
 
 def test_spec_complex_for_architectural_requirements(requirement_extraction_agent, parsed_bid_documents):
-    """Spec 5: Complex requirements (4+ components) should be marked Complex."""
+    """Spec 5: Complex requirements (architectural) should be marked Complex."""
     bid_doc = parsed_bid_documents["nhs_trust"]
     result = requirement_extraction_agent.run(bid_doc)
 

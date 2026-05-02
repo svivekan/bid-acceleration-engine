@@ -1,7 +1,7 @@
 # Phase 2: Requirement Extraction Agent
 
 ## Overview
-Extract and classify technical requirements from parsed bid documents. Identify mandatory vs. optional requirements, categorize by type, and assign priority and complexity estimates using both rule-based parsing and Claude API.
+Extract and classify technical requirements from parsed bid documents. Identify mandatory vs. optional requirements, categorize by type, and assign priority and complexity estimates using pure local rule-based parsing. No external APIs.
 
 ## Input
 - `BidDocument` (from Phase 1 bid_intake_agent)
@@ -97,19 +97,11 @@ Rules (apply in order):
 - Requires research/prototyping
 - Examples: "Distributed stream processing with 99.99% uptime", "Machine learning-based anomaly detection with sub-second latency"
 
-- [ ] Use Claude API to classify complexity intelligently
-- [ ] Fallback to keyword matching if Claude unavailable
+- [ ] Use rule-based heuristics to estimate complexity
+- [ ] Count keyword indicators: "distributed", "machine learning", "real-time", "sub-second", "99.99%"
+- [ ] Count dependencies: database, cloud, APIs, third-party systems
+- [ ] Assign complexity based on thresholds
 - [ ] Store in `estimated_complexity` field
-
-### 6. Use Claude API for Intelligent Classification
-- [ ] Send extracted requirement text to Claude
-- [ ] Prompt Claude to:
-  - Confirm category assignment
-  - Suggest priority override if needed
-  - Estimate complexity level
-  - Identify any sub-requirements
-- [ ] Use `AgentResult` error handling if Claude call fails
-- [ ] Cache Claude responses to avoid redundant API calls
 
 ### 7. Handle Edge Cases
 - [ ] Multi-line requirements: preserve line breaks, join into single requirement
@@ -146,7 +138,6 @@ Rules (apply in order):
 
 ### Error Handling
 - [ ] Missing MANDATORY/OPTIONAL section: return empty result or inferred requirements
-- [ ] Claude API timeout: fallback to rule-based classification
 - [ ] Malformed requirement text: skip with warning in AgentResult
 - [ ] No requirements found: return empty array with SUCCESS status
 
@@ -157,20 +148,19 @@ Rules (apply in order):
 agents/requirement_extraction_agent/
 ├── agent.py              # RequirementExtractionAgent class
 ├── parsers.py            # Pure functions for requirement extraction
-├── categorizer.py        # Rule-based and Claude-based categorization
+├── categorizer.py        # Rule-based categorization (local only)
 └── __init__.py
 ```
 
 ### Dependencies
-- `anthropic` library for Claude API calls
 - `pydantic` for ExtractedRequirement schema
 - Existing: `bid_acceleration_engine.schemas.bid`
 
-### LLM Integration Details
-- Use Claude Haiku or Sonnet for cost efficiency
-- Prompt template: Extract category, priority, complexity from requirement text
-- Handle rate limiting gracefully
-- Cache responses using requirement hash as key
+### Implementation Details
+- Pure local rule-based classification (no external APIs)
+- Regex-based keyword matching for categories
+- Heuristic-based complexity estimation
+- All processing happens in-memory on local machine
 
 ## Success Criteria
 
