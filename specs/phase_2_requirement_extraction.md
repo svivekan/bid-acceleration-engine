@@ -1,7 +1,7 @@
 # Phase 2: Requirement Extraction Agent
 
 ## Overview
-Extract and classify technical requirements from parsed bid documents. Identify mandatory vs. optional requirements, categorize by type, and assign priority and complexity estimates using pure local rule-based parsing. No external APIs.
+Extract and classify technical requirements from parsed bid documents. Identify mandatory vs. optional requirements, categorize by type, and assign priority and complexity estimates. Uses Claude Code for intelligent classification (local processing only, no Claude API calls).
 
 ## Input
 - `BidDocument` (from Phase 1 bid_intake_agent)
@@ -37,23 +37,25 @@ Wrapped in `AgentResult[ExtractedRequirement[]]` following Phase 1 pattern.
 - [ ] Preserve original text including line breaks
 - [ ] Handle multi-line requirements (continue until next number)
 
-### 3. Categorize into Four Types (in order)
-Apply rules in this order; first match wins:
+### 3. Categorize into Four Types
+
+Use Claude Code to classify each requirement into one of:
 
 **Technical** - Systems, infrastructure, platforms
-- Keywords: database, cloud, API, system, architecture, framework, service, integration, platform, deployment, hosting, protocol, data structure, algorithm
+- Examples: database, cloud, API, architecture, framework, service, integration, deployment
 
 **Security** - Protection and access control
-- Keywords: encryption, authentication, authorization, access control, HTTPS, SSL/TLS, firewall, audit, threat, vulnerability, penetration, compliance
+- Examples: encryption, authentication, authorization, access control, firewall, audit
 
 **Compliance** - Legal and regulatory
-- Keywords: GDPR, HIPAA, SOC2, compliance, audit, standards, regulations, legal, laws, requirements, certification, accreditation
+- Examples: GDPR, HIPAA, SOC2, audit, standards, regulations, legal requirements
 
 **Performance** - Speed, capacity, reliability
-- Keywords: latency, throughput, uptime, availability, concurrent, users, response time, load, scalability, capacity, SLA, redundancy, failover
+- Examples: latency, throughput, uptime, availability, concurrent users, response time, scalability
 
-- [ ] Default to **Technical** if no keywords match
-- [ ] Store matched category in `category` field
+- [ ] Use Claude Code to intelligently categorize each requirement
+- [ ] Default to **Technical** if classification is ambiguous
+- [ ] Store category in `category` field
 
 ### 4. Assign Priority (High/Medium/Low)
 Rules (apply in order):
@@ -77,7 +79,8 @@ Rules (apply in order):
 - [ ] Store in `priority` field
 
 ### 5. Estimate Complexity (Simple/Moderate/Complex)
-Rules (apply in order):
+
+Use Claude Code to intelligently assess complexity based on:
 
 **Simple** (straightforward to implement)
 - Single responsibility requirement
@@ -97,10 +100,9 @@ Rules (apply in order):
 - Requires research/prototyping
 - Examples: "Distributed stream processing with 99.99% uptime", "Machine learning-based anomaly detection with sub-second latency"
 
-- [ ] Use rule-based heuristics to estimate complexity
-- [ ] Count keyword indicators: "distributed", "machine learning", "real-time", "sub-second", "99.99%"
-- [ ] Count dependencies: database, cloud, APIs, third-party systems
-- [ ] Assign complexity based on thresholds
+- [ ] Use Claude Code to assess requirement complexity
+- [ ] Analyze: scope, dependencies, cross-system impact, technical maturity needed
+- [ ] Return one of: Simple, Moderate, Complex
 - [ ] Store in `estimated_complexity` field
 
 ### 7. Handle Edge Cases
@@ -147,20 +149,22 @@ Rules (apply in order):
 ```
 agents/requirement_extraction_agent/
 ├── agent.py              # RequirementExtractionAgent class
-├── parsers.py            # Pure functions for requirement extraction
-├── categorizer.py        # Rule-based categorization (local only)
+├── parsers.py            # Extract numbered requirements from text
+├── classifier.py         # Use Claude Code for intelligent classification
 └── __init__.py
 ```
 
 ### Dependencies
 - `pydantic` for ExtractedRequirement schema
 - Existing: `bid_acceleration_engine.schemas.bid`
+- Claude Code for classification (invoked locally, no API calls)
 
 ### Implementation Details
-- Pure local rule-based classification (no external APIs)
-- Regex-based keyword matching for categories
-- Heuristic-based complexity estimation
+- Use Claude Code to intelligently classify requirements
+- Claude Code processes locally (no external APIs)
+- Extract: category, priority, complexity
 - All processing happens in-memory on local machine
+- Fallback to simple heuristics if Claude Code unavailable
 
 ## Success Criteria
 

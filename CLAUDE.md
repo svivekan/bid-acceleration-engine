@@ -134,12 +134,12 @@ Functions in `utils/` have no side effects and no imports from `agents/`:
 
 ### 5. Local-First, No External APIs (All Phases)
 
-- No network calls
-- No external APIs (including Claude API, OpenAI, etc.)
-- No external ML/AI services
+- No network calls to external services
+- No Claude API calls (no programmatic API usage)
+- No OpenAI API or other external ML/AI APIs
 - All processing in-memory on local machine
-- All 6 agents use pure Python with rule-based logic
-- Claude Pro subscription used only for consulting during development, not for runtime
+- Claude Code can be used at runtime for intelligent processing (locally, not via API)
+- Claude Pro subscription used for consulting and intelligent processing, never API calls
 
 ## Testing Strategy
 
