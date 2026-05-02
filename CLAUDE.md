@@ -4,9 +4,24 @@
 
 A local-first AI pipeline for accelerating government and enterprise bid responses. The system chains discrete agents, each responsible for a stage of bid analysis and response generation.
 
-**Current Phase:** Phase 2 - Requirement Extraction Agent
+**Context:** Built for an **Azure-only consulting company**. This tool helps Azure Solutions Architects rapidly generate Azure-based solution outlines for UK government RFPs (Local Council, NHS, Transport, Education, Water Authority).
 
-**Architecture:** 6-agent pipeline, all phases local-first (no external APIs)
+**Current Phase:** Phase 3 - Solution Outline Agent (in planning)
+
+**Architecture:** 6-agent pipeline, all phases local-first (no external APIs), all solutions Azure-only
+
+## Azure Consulting Company Context
+
+This tool is purpose-built for an Azure consulting firm. Key principles:
+
+- **Azure-only:** All solutions must use Azure services. No AWS, GCP, or hybrid recommendations.
+- **Consulting-ready:** Generated solutions are detailed enough to include directly in bid proposals.
+- **Credibility:** Quality bar is high—recommendations reflect on consulting firm reputation.
+- **UK Government:** Solutions address UK compliance (GDPR, NHS standards, Cabinet Office security guidance).
+- **Well-Architected:** All Phase 3+ solutions reference Azure Well-Architected Framework.
+- **Patterns-driven:** Leverage Microsoft's reference architectures and best practices.
+
+**Target User:** Azure Solutions Architects responding to government RFPs
 
 ## Tech Stack
 
@@ -188,6 +203,7 @@ uv run pytest tests/agents/test_bid_intake_agent.py::test_happy_path -v
 
 ## Notes for Claude
 
+### General Principles
 - **Local-first principle:** All 6 agents must work entirely offline, no external APIs under any circumstances
 - **Keep implementation intentionally focused:** Each agent does one thing well, no over-engineering
 - **Validate Pydantic generics early:** `AgentResult[T]` must work before building on top
@@ -196,3 +212,12 @@ uv run pytest tests/agents/test_bid_intake_agent.py::test_happy_path -v
 - **Prefer explicit over implicit:** Type hints, docstrings, and clear variable names
 - **Avoid over-engineering:** No abstract base classes beyond what's documented, no premature refactoring
 - **Use Claude Pro subscription only for development guidance:** Never call APIs from running code
+
+### Azure-Specific Principles (Phase 3+)
+- **Azure-only solutions:** All Phase 3 solution outlines must recommend Azure services only. No comparative analysis with other clouds.
+- **Consulting credibility:** Assume generated solutions will be included in actual bid proposals. Quality and accuracy are critical.
+- **Well-Architected Framework:** Reference Microsoft's five pillars: Reliability, Security, Cost Optimization, Operational Excellence, Performance Efficiency.
+- **UK Government compliance:** Solutions should address GDPR, NHS Data Security and Protection Toolkit (DSPT), Cabinet Office security guidelines.
+- **Reference architectures:** Leverage Microsoft's published reference architectures on GitHub (Azure Architecture Center).
+- **Service specificity:** Recommend specific Azure services (App Service, SQL Database, Cosmos DB) with SKU/tier guidance where appropriate.
+- **Managed services preference:** Recommend managed Azure services over IaaS where it aligns with consulting best practices.
