@@ -228,3 +228,140 @@ More content"""
     assert section_a is not None
     assert "Line 1" in section_a.body
     assert "Line 3" in section_a.body
+
+
+# UK-Specific Parser Tests
+
+def test_extract_due_date_uk_format_day_month_year():
+    """Test extracting UK format dates (Day Month Year)."""
+    text = "Closing Date: 15 May 2026"
+    result = extract_due_date(text)
+    assert isinstance(result, datetime)
+    assert result.date() == date(2026, 5, 15)
+
+
+def test_extract_due_date_uk_format_with_time():
+    """Test extracting UK format dates with time component."""
+    text = "Closing Date: 30 April 2026 16:00"
+    result = extract_due_date(text)
+    assert isinstance(result, datetime)
+    assert result.date() == date(2026, 4, 30)
+
+
+def test_extract_due_date_uk_format_abbreviated_month():
+    """Test extracting UK format with abbreviated month name."""
+    text = "Closing Date: 10 Mar 2026"
+    result = extract_due_date(text)
+    assert isinstance(result, datetime)
+    assert result.date() == date(2026, 3, 10)
+
+
+def test_extract_due_date_uk_format_various_months():
+    """Test various UK date format month names."""
+    test_cases = [
+        ("Closing Date: 1 January 2026", date(2026, 1, 1)),
+        ("Closing Date: 28 February 2026", date(2026, 2, 28)),
+        ("Closing Date: 15 June 2026", date(2026, 6, 15)),
+        ("Closing Date: 25 December 2026", date(2026, 12, 25)),
+    ]
+
+    for text, expected_date in test_cases:
+        result = extract_due_date(text)
+        assert isinstance(result, datetime)
+        assert result.date() == expected_date, f"Failed for {text}"
+
+
+def test_extract_issuer_uk_local_authority():
+    """Test extracting UK local authority issuer."""
+    text = """LOCAL AUTHORITY PROCUREMENT
+
+Contracting Authority: Metropolitan London Borough Council"""
+    result = extract_issuer(text)
+    assert result == "Metropolitan London Borough Council"
+
+
+def test_extract_issuer_uk_nhs_trust():
+    """Test extracting UK NHS Trust issuer."""
+    text = """NHS PROCUREMENT
+
+Contracting Authority: North Regional Health System NHS Trust"""
+    result = extract_issuer(text)
+    assert result == "North Regional Health System NHS Trust"
+
+
+def test_extract_issuer_uk_water_authority():
+    """Test extracting UK water authority issuer."""
+    text = """WATER AUTHORITY PROCUREMENT
+
+Contracting Authority: Thames Valley Water Authority"""
+    result = extract_issuer(text)
+    assert result == "Thames Valley Water Authority"
+
+
+def test_extract_issuer_uk_education_consortium():
+    """Test extracting UK higher education consortium issuer."""
+    text = """HIGHER EDUCATION PROCUREMENT
+
+Contracting Authority: Northern Universities Consortium (8 institutions)"""
+    result = extract_issuer(text)
+    assert result == "Northern Universities Consortium (8 institutions)"
+
+
+def test_extract_issuer_with_parenthetical_info():
+    """Test extracting issuer that includes parenthetical information."""
+    text = "Contracting Authority: Department (Office of Technology)"
+    result = extract_issuer(text)
+    assert result == "Department (Office of Technology)"
+
+
+def test_extract_title_uk_procurement_format():
+    """Test extracting title from UK procurement document."""
+    text = "INTEGRATED COUNCIL DATA ANALYTICS PLATFORM\n\nProcurement Reference: LA-2026-DATA-001"
+    result = extract_title(text)
+    assert result == "INTEGRATED COUNCIL DATA ANALYTICS PLATFORM"
+
+
+def test_extract_sections_uk_procurement_structure():
+    """Test extracting sections from UK procurement document structure."""
+    text = """EXECUTIVE SUMMARY
+
+The project seeks a platform.
+
+PROJECT SCOPE
+
+Data Integration:
+- Consolidate data sources
+- Support integration
+
+MANDATORY REQUIREMENTS
+
+1. Process data
+2. Support users"""
+
+    sections = extract_sections(text)
+    headings = [s.heading for s in sections if s.heading]
+    assert any("EXECUTIVE SUMMARY" in h for h in headings)
+    assert any("PROJECT SCOPE" in h for h in headings)
+    assert any("MANDATORY" in h for h in headings)
+
+
+def test_extract_sections_with_bullets_and_lists():
+    """Test that section content with bullets and lists is preserved."""
+    text = """SCOPE OF WORK
+
+Data Integration:
+- Collect real-time traffic data from sensors
+- Integration with 50 state transportation agencies
+- Traffic incident reporting from emergency services
+
+REQUIREMENTS
+
+Technical Requirements:
+- Distributed stream processing
+- Time-series database"""
+
+    sections = extract_sections(text)
+    scope_section = next((s for s in sections if s.heading and "SCOPE" in s.heading), None)
+    assert scope_section is not None
+    assert "Collect real-time traffic" in scope_section.body
+    assert "Integration with 50 state" in scope_section.body
