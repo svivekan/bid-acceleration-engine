@@ -23,3 +23,6 @@ htmlcov/
 
 # OS
 .DS_Store
+
+# Generated output from walkthrough scripts
+results/
