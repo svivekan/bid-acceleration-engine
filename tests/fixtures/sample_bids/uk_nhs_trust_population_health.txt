@@ -1,0 +1,77 @@
+NHS PROCUREMENT NOTICE
+
+Solicitation Title: Integrated Population Health Analytics System
+Procurement Reference: NHS-2026-POPHEALTH-042
+Contracting Authority: North Regional Health System NHS Trust
+Published Date: 22 February 2026
+Closing Date: 30 April 2026 16:00
+Estimated Contract Value: £3.4 Million
+Contract Duration: 30 months
+
+OVERVIEW
+
+North Regional Health System NHS Trust provides care across 8 hospitals and 150+ community clinics, serving a population of 1.2 million residents. The Trust requires an integrated analytics platform to understand population health needs, identify high-risk patients, and optimise service delivery across primary, secondary, and community care.
+
+PROJECT OBJECTIVES
+
+Data Consolidation:
+- Integrate data from Hospital Electronic Health Record (Epic)
+- Connect Primary Care data (GP systems across 200+ practices)
+- Include social care data from local authority partners
+- Incorporate mental health and community nursing records
+- Support 500,000+ active patient records
+
+Population Analytics:
+- Cohort identification for chronic disease management (diabetes, COPD, heart disease)
+- Risk stratification for unplanned admission prevention
+- Identify health inequalities across postcodes and demographics
+- Track performance against NHS Outcomes Framework indicators
+
+Service Optimisation:
+- Bed occupancy and theatre utilisation dashboards
+- Emergency Department activity forecasting
+- Outpatient demand analysis by specialty
+- Readmission rate tracking and analysis
+
+Integration & Interoperability:
+- FHIR-compliant APIs for third-party integration
+- HL7 messaging support for legacy systems
+- Integration with NHS Digital services (SUS, GPES)
+- Open standards for data export and reporting
+
+MANDATORY REQUIREMENTS
+
+1. Support 500,000+ active patient records with sub-second query response
+2. Real-time data feed from Epic EHR (minimum 4 feeds per day for primary care)
+3. 99.9% system availability during NHS operating hours
+4. HIPAA and GDPR compliance with NHS Data Security Protection Toolkit accreditation
+5. Role-based access control with NHS job role integration
+6. Automated data anonymisation for analytics and research purposes
+7. Audit logging for all access and modifications (10-year retention)
+8. Integrated quality assurance for data completeness and accuracy
+
+TECHNICAL SPECIFICATIONS
+
+- Cloud or on-premises deployment acceptable (NHS preferred suppliers framework aligned)
+- Support for 200+ concurrent users
+- Integration with Epic EHR via standard HL7/FHIR interfaces
+- Modern BI platform (Tableau, Power BI, or equivalent)
+- Support for predictive analytics and machine learning models
+- Daily automated data refresh with reconciliation to source systems
+
+OPTIONAL ENHANCEMENTS
+
+- Predictive models for 30-day readmission risk
+- Integration with social prescribing systems
+- Patient portal for self-monitoring and engagement
+- Automated alert system for safety incidents (e.g., falls, medication errors)
+- Benchmarking against national NHS targets
+
+SCORING
+
+Clinical and Operational Alignment: 40%
+Technical Solution and Innovation: 30%
+Implementation Track Record with NHS: 20%
+Price and Value for Money: 10%
+
+Submit to: procurement@northregionalhealthsystem.nhs.uk

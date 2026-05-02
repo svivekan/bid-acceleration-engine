@@ -1,0 +1,78 @@
+WATER AUTHORITY PROCUREMENT
+
+Solicitation Title: Water Quality and Environmental Monitoring Data Platform
+Procurement Reference: WA-2026-ENVIRONMENT-021
+Contracting Authority: Thames Valley Water Authority
+Published Date: 5 February 2026
+Closing Date: 2 April 2026 13:00
+Estimated Contract Value: £3.1 Million
+Contract Duration: 30 months
+
+BACKGROUND
+
+Thames Valley Water Authority manages water resources, quality monitoring, and environmental compliance across a 4,200 square mile region. Current monitoring data is scattered across legacy systems operated by multiple suppliers, preventing real-time insight into water quality trends and environmental impacts.
+
+PROJECT OBJECTIVES
+
+Data Integration:
+- Consolidate data from 180+ water quality monitoring stations
+- Integrate 50+ upstream catchment monitoring sites (Environment Agency partnership)
+- Connect wastewater treatment facility data (15 sites)
+- Include historical data (10 years) for trend analysis
+- Support real-time telemetry from automated sensors (1-hour update frequency)
+
+Water Quality Analytics:
+- Real-time monitoring of key parameters (dissolved oxygen, pH, turbidity, temperature)
+- Detection of pollution incidents and automated alert system
+- Algal bloom prediction using environmental data (temperature, nutrients, light)
+- Tracking of pesticides and pharmaceutical residues (compliance monitoring)
+- Nutrient cycle analysis (nitrogen, phosphorus) for regulatory reporting
+
+Environmental Impact:
+- Habitat impact assessment for biodiversity reporting
+- Flow regime analysis for ecological health
+- Fish passage and barrier assessment tools
+- Integration with ecological survey data (bird, invertebrate populations)
+
+Regulatory Compliance:
+- Automated reporting for Environment Agency requirements (WFD, Habitats Directive)
+- Drinking water quality compliance tracking
+- Wastewater discharge permit monitoring
+- Conservation site status and trigger alerting
+
+MANDATORY REQUIREMENTS
+
+1. Real-time data ingestion from 180+ water monitoring stations
+2. Support 50+ concurrent users across multiple sites
+3. Alert generation within 15 minutes of anomaly detection
+4. 99.8% system availability during operations
+5. Historical data archive (10 years) with query capability
+6. Automated Environment Agency compliance reporting
+7. Integration with 5 different legacy monitoring systems
+8. Data quality assurance with automatic validation rules
+
+TECHNICAL SPECIFICATIONS
+
+- Cloud or on-premises deployment (water industry infrastructure considerations)
+- Real-time streaming data architecture (sub-minute latency for alerts)
+- Time-series database for sensor measurements
+- Geospatial capability for site mapping and catchment analysis
+- Advanced analytics for trend detection and forecasting
+- Mobile app for field inspector access to real-time data
+
+OPTIONAL ENHANCEMENTS
+
+- Machine learning for pollution source identification
+- Integration with weather services for predictive analytics
+- Drone or satellite imagery integration for rapid assessment
+- Integration with public app for river condition reporting
+- Automated sampling optimization (reduce frequency for stable parameters)
+
+SCORING
+
+Technical Solution and Innovation: 40%
+Experience with Water/Environmental Systems: 30%
+Regulatory Compliance Capability: 20%
+Cost and Value for Money: 10%
+
+Submit to: procurement@thamesvalleywater.gov.uk

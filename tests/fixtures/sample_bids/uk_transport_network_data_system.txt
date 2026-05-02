@@ -1,0 +1,76 @@
+TRANSPORT AUTHORITY PROCUREMENT
+
+Solicitation Title: Multi-Modal Transport Network Analytics Platform
+Procurement Reference: TA-2026-TRANSPORT-008
+Contracting Authority: Greater Manchester Transport Authority
+Published Date: 8 January 2026
+Closing Date: 10 March 2026 17:00
+Estimated Contract Value: £4.2 Million
+Contract Duration: 36 months
+
+BACKGROUND
+
+Greater Manchester Transport Authority operates buses, trams, and trains across the region, serving 2.8 million residents. Current data systems are fragmented across operators, preventing integrated journey planning, capacity management, and passenger experience optimisation.
+
+SCOPE OF WORK
+
+Data Integration:
+- Consolidate real-time location data from 450+ buses (GPS feeds)
+- Integrate tram system (Metrolink) passenger counts and track data
+- Connect regional rail operator (TransPennine Express) service data
+- Include historical operational data (5 years) from all modes
+- Support 200+ data feeds from third-party providers (parking, traffic, weather)
+
+Real-Time Insights:
+- Live journey planner showing multi-modal options (bus, tram, train, cycle hire, taxi)
+- Real-time occupancy predictions for capacity management
+- Delay prediction and alert system for passengers
+- Dynamic routing to manage passenger flow during disruptions
+
+Analytics & Reporting:
+- Passenger demand analysis by route, time, and destination
+- Operator performance dashboards (reliability, punctuality, customer satisfaction)
+- Revenue analysis and ticket sales forecasting
+- Equality and accessibility monitoring across transport modes
+
+System Performance:
+- Ingest 50,000+ location updates per minute during peak hours
+- Query latency <2 seconds for passenger-facing journey planning
+- 99.95% uptime during operating hours
+- Support 100,000+ concurrent mobile app users
+
+MANDATORY REQUIREMENTS
+
+1. Process 50,000+ GPS/data updates per minute at peak
+2. Support 100,000+ concurrent mobile app users
+3. Journey planning response <2 seconds (99th percentile)
+4. 99.95% system availability during 04:30-23:30 daily
+5. Real-time integration with 450+ buses, 40 trams, 20 train stations
+6. Support multi-modal journey options (bus, tram, train, cycle, taxi)
+7. Passenger analytics with anonymisation for GDPR compliance
+8. Automatic failover with zero data loss for critical feeds
+
+TECHNICAL ARCHITECTURE
+
+- Distributed streaming architecture for high-frequency data ingestion
+- Time-series database for vehicle location and sensor data
+- Graph database for network topology and journey planning
+- Modern API layer supporting mobile and web applications
+- Machine learning pipeline for demand forecasting and disruption prediction
+
+OPTIONAL CAPABILITIES
+
+- Predictive maintenance alerts for fleet operators
+- Crowdsourced incident reporting and verification
+- Integration with smart traffic signals for priority transit
+- Emission monitoring and carbon footprint reporting
+- Integration with mobility-as-a-service aggregators (Uber, Citymapper)
+
+Evaluation Factors
+
+Technical Approach and Innovation: 40%
+Experience with Transport Systems: 30%
+Team Capabilities and Support: 20%
+Cost and Value: 10%
+
+Submit to: procurement@gmtransport.gov.uk

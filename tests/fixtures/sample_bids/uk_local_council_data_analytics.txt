@@ -1,0 +1,68 @@
+LOCAL AUTHORITY PROCUREMENT NOTICE
+
+Solicitation Title: Integrated Council Data Analytics Platform
+Procurement Reference: LA-2026-DATA-001
+Contracting Authority: Metropolitan London Borough Council
+Published Date: 15 March 2026
+Closing Date: 15 May 2026 12:00 noon
+Estimated Contract Value: £2.8 Million
+Contract Duration: 24 months
+
+EXECUTIVE SUMMARY
+
+The Metropolitan London Borough Council seeks an integrated data analytics platform to consolidate resident data across five key service areas: Council Tax & Benefits, Adult Social Care, Children's Services, Housing, and Planning & Enforcement. Current systems operate in silos, preventing holistic analysis and targeted service delivery.
+
+PROJECT SCOPE
+
+Data Integration:
+- Consolidate data from 8 legacy council systems (Oracle EBS, various case management systems)
+- Match records at household and individual level (pseudonymised)
+- Support both structured (transactional) and unstructured (case notes) data
+- Design for incremental expansion to additional service areas
+
+Analytics & Insights:
+- Build interactive dashboards for service managers and elected members
+- Implement predictive models for vulnerability identification (safeguarding priority)
+- Generate monthly performance reports against council targets
+- Enable ad-hoc analysis capability for commissioners and analysts
+
+Data Governance:
+- Implement role-based access control across service silos
+- Ensure GDPR compliance with Data Protection Impact Assessment (DPIA)
+- Maintain audit trail for all data access and modifications
+- Support data retention and secure archival policies
+
+Technical Requirements:
+- Cloud-based SaaS deployment (Azure, AWS, or GCP acceptable)
+- Minimum 99.5% uptime for production environment
+- Sub-5 second query response times for standard dashboards
+- Support 50+ concurrent users across council departments
+- Daily data refresh cycles from source systems
+
+MANDATORY REQUIREMENTS
+
+1. Handle datasets from 8 different source systems
+2. Support 50+ concurrent users with role-based access control
+3. Dashboard query response time <5 seconds
+4. GDPR compliance with documented DPIA
+5. Data integration completion within 4 months of go-live
+6. Support for both SQL and no-code dashboard creation
+7. Automated daily reconciliation and data quality checks
+8. Disaster recovery with 4-hour RTO and 1-hour RPO
+
+OPTIONAL ENHANCEMENTS
+
+- Machine learning for service demand forecasting
+- Integration with citizen portals for self-service access
+- Mobile app for field workers in social care
+- API for third-party integration with care providers
+- Advanced geospatial analysis for neighbourhood targeting
+
+EVALUATION CRITERIA
+
+Technical Approach and Capability: 45%
+Previous Experience with Local Government: 25%
+Team Qualifications and Support Model: 20%
+Price: 10%
+
+Submit to: procurements@metroborough.gov.uk

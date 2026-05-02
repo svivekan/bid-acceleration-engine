@@ -1,0 +1,68 @@
+HIGHER EDUCATION PROCUREMENT
+
+Solicitation Title: Research Data Management and Discovery Platform
+Procurement Reference: UNIV-2026-RESEARCH-015
+Contracting Authority: Northern Universities Consortium (8 institutions)
+Published Date: 20 March 2026
+Closing Date: 20 May 2026 16:00
+Estimated Contract Value: £1.9 Million
+Contract Duration: 24 months (with optional 12-month extension)
+
+PURPOSE
+
+A consortium of eight UK research universities requires a unified research data management platform to support open research, enable data discovery, and facilitate collaboration across institutions while meeting UKRI funding council requirements for data management and sharing.
+
+TECHNICAL REQUIREMENTS
+
+Data Management Capabilities:
+- Support datasets up to 100 GB per research project
+- Storage for 5,000+ active research projects (100 TB aggregate capacity)
+- Version control for research datasets with audit trail
+- Metadata cataloguing with Dublin Core and DataCite standards
+- Digital Object Identifier (DOI) minting for data citability
+
+Discovery and Access:
+- Federated search across all 8 university repositories
+- Full-text search of metadata and datasets
+- Advanced filtering (by funder, institution, research area, date)
+- API for programmatic discovery and data access
+- Export of metadata in standard formats (JSON, RDF, CSV)
+
+Collaboration Features:
+- Shared dataset access with fine-grained permissions (by user, group, institution)
+- Data provenance tracking and researcher attribution
+- Annotation and commenting capabilities for peer feedback
+- Integration with Jupyter Notebooks for interactive analysis
+
+Preservation & Compliance:
+- FAIR data principles compliance (Findable, Accessible, Interoperable, Reusable)
+- 10-year data retention capability with digital preservation assurance
+- Format migration planning for long-term sustainability
+- Compliance with UKRI, Wellcome Trust, and EU Horizon grant requirements
+
+EVALUATION CRITERIA
+
+Technical Innovation and Feasibility: 35%
+Alignment with Open Research Goals: 25%
+Cost Efficiency and Scalability: 25%
+Implementation Track Record: 15%
+
+MANDATORY TECHNICAL SPECS
+
+1. Handle 100 GB per-project average dataset size
+2. Support 500+ concurrent users across 8 institutions
+3. Metadata query response <2 seconds
+4. Support 50+ metadata element types
+5. Cloud deployment with disaster recovery (RTO 4 hours, RPO 1 hour)
+6. OpenStack or commercial cloud infrastructure (AWS/Azure/GCP)
+7. Integration with institutional single sign-on (Shibboleth/SAML)
+
+OPTIONAL FEATURES
+
+- Machine learning for dataset discovery and recommendations
+- Advanced geospatial data visualisation
+- Integration with computational workflow systems (Galaxy, CWL)
+- Data analysis sandbox environment for secure exploration
+- Blockchain audit trail for immutable data provenance
+
+Submit to: research-data@northernconsortium.ac.uk
