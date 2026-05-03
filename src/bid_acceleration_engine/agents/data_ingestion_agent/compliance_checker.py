@@ -94,7 +94,7 @@ def generate_gdpr_checklist() -> list[str]:
         List of GDPR checklist items.
     """
     return [
-        "☐ Data residency: All data in UK regions (UK South or UK West)",
+        "☐ GDPR compliance: Data residency in UK regions (UK South or UK West)",
         "☐ Data Protection Impact Assessment (DPIA) completed",
         "☐ Encryption in transit (TLS 1.2+) enabled",
         "☐ Encryption at rest enabled for all data stores",

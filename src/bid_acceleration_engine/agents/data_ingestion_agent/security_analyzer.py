@@ -24,8 +24,20 @@ def determine_encryption(
     # At-rest encryption for GDPR, PII, healthcare, government
     needs_at_rest = any(keyword in text for keyword in ["gdpr", "pii", "healthcare", "government", "sensitive"])
 
-    # Column-level encryption for PII and GDPR
-    needs_column_encryption = any(keyword in text for keyword in ["gdpr", "pii", "personal data", "sensitive data"])
+    # Column-level encryption for PII, GDPR, and healthcare
+    needs_column_encryption = any(
+        keyword in text
+        for keyword in [
+            "gdpr",
+            "pii",
+            "personal data",
+            "sensitive data",
+            "healthcare",
+            "nhs",
+            "patient data",
+            "dspt",
+        ]
+    )
 
     if needs_at_rest:
         logger.debug("Encryption at-rest required")
@@ -69,7 +81,10 @@ def generate_security_recommendations(
         recommendations.append("Rotate SQL Server credentials quarterly (store in Azure Key Vault)")
         recommendations.append("Use Azure Key Vault for secure credential storage")
 
-    if auth_method != "managed-identity" and "modern" in text:
+    if auth_method == "managed-identity":
+        recommendations.append("Use Managed Identity instead of SQL credentials (modern best practice)")
+
+    if auth_method == "sql-auth" and ("modern" in text or "managed identity" in text):
         recommendations.append("Use Managed Identity instead of SQL credentials (modern best practice)")
 
     # Encryption recommendations

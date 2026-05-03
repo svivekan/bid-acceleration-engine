@@ -116,6 +116,13 @@ class DataIngestionAgent(BaseAgent):
             key_services = recommender.get_key_services(tool)
 
             # ====================================================================
+            # Detect Compliance Requirements (always needed)
+            # ====================================================================
+            is_uk_gov = compliance_checker.check_uk_government(requirements)
+            has_gdpr = compliance_checker.check_gdpr_requirement(requirements)
+            is_healthcare = compliance_checker.check_healthcare_requirement(requirements)
+
+            # ====================================================================
             # PHASE 4: SHIR Configuration (if on-premise sources)
             # ====================================================================
             shir_config = None
@@ -154,9 +161,6 @@ class DataIngestionAgent(BaseAgent):
                 # ================================================================
                 # PHASE 6: Compliance Configuration
                 # ================================================================
-                is_uk_gov = compliance_checker.check_uk_government(requirements)
-                has_gdpr = compliance_checker.check_gdpr_requirement(requirements)
-                is_healthcare = compliance_checker.check_healthcare_requirement(requirements)
                 uk_residency = compliance_checker.check_uk_data_residency(requirements) or is_uk_gov
 
                 uk_regions = compliance_checker.get_uk_regions() if uk_residency else []
@@ -186,12 +190,12 @@ class DataIngestionAgent(BaseAgent):
                     uk_region_required=uk_residency,
                     azure_regions=uk_regions,
                     gdpr_compliant=has_gdpr,
-                    audit_logging_required=is_uk_gov or has_gdpr,
+                    audit_logging_required=is_uk_gov or has_gdpr or ha_required,
                     monitoring_enabled=True,
                     shir_connection_monitoring=True,
-                    data_movement_audit_trail=is_uk_gov or has_gdpr,
+                    data_movement_audit_trail=is_uk_gov or has_gdpr or ha_required,
                     alerting_on_failures=True,
-                    alerting_on_suspicious_access=is_uk_gov or has_gdpr,
+                    alerting_on_suspicious_access=is_uk_gov or has_gdpr or ha_required,
                     concurrent_connections=concurrent_connections,
                     estimated_daily_volume_gb=estimated_daily_volume,
                     retry_strategy="exponential-backoff",
@@ -250,7 +254,7 @@ class DataIngestionAgent(BaseAgent):
             )
 
             return AgentResult(
-                agent_name=self.agent_name,
+                agent_name=self.name,
                 status=AgentStatus.SUCCESS,
                 output=architecture,
                 error_message=None,
@@ -261,7 +265,7 @@ class DataIngestionAgent(BaseAgent):
         except Exception as e:
             logger.error(f"DataIngestionAgent failed: {e}", exc_info=True)
             return AgentResult(
-                agent_name=self.agent_name,
+                agent_name=self.name,
                 status=AgentStatus.FAILURE,
                 output=None,
                 error_message=str(e),
