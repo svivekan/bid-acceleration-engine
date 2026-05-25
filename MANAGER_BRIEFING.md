@@ -117,19 +117,50 @@ Key services:      Azure Data Factory, SHIR, Key Vault, Monitor, Synapse Analyti
 
 ## Live Demo — Run This During the Call
 
-### Step 1 — Run the full pipeline (Phases 1, 2 & 3)
+The walkthrough shows how the system extracts requirements from RFPs, detects architectural signals, and recommends specific Azure services based on decision logic.
+
+### Scenario 1: Local Council Digital Platform
 ```bash
 uv run python walkthrough_phase1_to_phase3.py tests/fixtures/sample_bids/uk_local_council_data_analytics.txt
 ```
 
-Try other RFP fixtures for different results:
-```bash
-# NHS Trust
-uv run python walkthrough_phase1_to_phase3.py tests/fixtures/sample_bids/uk_nhs_trust_population_health.txt
+**Decision logic explained:**
+- **Data sources:** 8 systems (Council Tax, Social Care, Housing, etc.) → moderate complexity
+- **Freshness:** "Daily data refresh cycles" → batch ingestion (not streaming)
+- **On-premise signals:** Oracle EBS, case management systems → requires Self-Hosted IR
+- **Governance:** GDPR compliance, audit trails, DPIA required → enterprise-grade tools
+- **Recommendation:** **Fabric Pipeline** (score: 1 = enterprise governance +1, <3 sources)
+  - Why NOT Data Factory? Only 8 systems and daily batch (Fabric is sufficient & cost-effective)
+  - Why NOT Event Hubs? No real-time signals, no event streaming keywords
+  - SHIR config: 3-node HA cluster, ExpressRoute for secure on-prem connectivity, TLS 1.2+
 
-# Transport
+### Scenario 2: NHS Trust Real-Time Clinical Integration
+```bash
+uv run python walkthrough_phase1_to_phase3.py tests/fixtures/sample_bids/uk_nhs_trust_population_health.txt
+```
+
+**Decision logic explained:**
+- **Data sources:** 12 hospital systems (Epic EHR, labs, imaging) → high complexity
+- **Freshness signals:** "Real-time patient data feeds" (4 feeds/day from Epic) → time-sensitive
+- **Healthcare compliance:** NHS DSPT standards, clinical audit trails, PII protection
+- **Recommendation:** **Data Factory** (score: 3+ = 12 sources +2, >10 dependencies +2, governance +1)
+  - Why NOT Fabric? 12+ systems with complex orchestration needs (Fabric insufficient)
+  - Why NOT Event Hubs? 4 feeds/day is scheduled batch, not continuous event streaming
+  - SHIR config: 3-node HA, Managed Identity for NHS Azure subscription security
+
+### Scenario 3: Transport Authority Real-Time Telematics
+```bash
 uv run python walkthrough_phase1_to_phase3.py tests/fixtures/sample_bids/uk_transport_network_data_system.txt
 ```
+
+**Decision logic explained:**
+- **Data sources:** 450+ buses (GPS feeds) + 1000+ events/second traffic data → streaming signals
+- **Freshness signals:** "Real-time location data", "continuous processing", "1000+ events per second" → streaming
+- **Recommendation:** **Event Hubs + Stream Analytics** (streaming detected)
+  - Why streaming? Keywords trigger: "real-time", "continuous", "events per second"
+  - Data Lakehouse as sink for real-time dashboards
+  - No SHIR needed (cloud-native APIs, not on-prem sources)
+  - Stream Analytics jobs for real-time aggregation & capacity management
 
 ### Step 2 — Show the test suite
 ```bash
@@ -137,13 +168,27 @@ uv run pytest tests/ --tb=no -q
 ```
 Expected: `208 passed, 6 failed in ~1s`
 
+All three scenarios validated against realistic UK government requirements.
+
 ### Step 3 — Open a fixture file to show a real RFP input
 ```
 tests/fixtures/sample_bids/uk_local_council_data_analytics.txt
 ```
 
+Shows the raw requirements the system is analyzing (MANDATORY REQUIREMENTS, OPTIONAL ENHANCEMENTS).
+
 ### Step 4 — Open the JSON output in results/ to show what the pipeline produces
-The walkthrough saves Phase 1, 2, and 3 JSON outputs to `results/`.
+```bash
+cat results/uk_local_council_data_analytics_*_phase3_output.json | jq .
+```
+
+Shows the complete architectural recommendation:
+- Tool selection & justification
+- SHIR configuration (placement, HA nodes, network security, authentication)
+- Security recommendations (encryption, firewall rules, credential rotation)
+- Compliance checklist (GDPR, NHS DSPT, data residency)
+- Architecture pattern diagram
+- Assumptions & constraints
 
 ---
 
