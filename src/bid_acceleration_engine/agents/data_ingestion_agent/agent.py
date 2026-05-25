@@ -233,7 +233,7 @@ class DataIngestionAgent(BaseAgent):
                 tool=tool,
                 is_streaming=is_streaming,
                 complexity_score=complexity_score,
-                detected_sources=detector.ON_PREMISE_SOURCES + detector.CLOUD_SOURCES,
+                detected_sources=detector.detect_all_sources(requirements),
                 on_premise_sources=on_premise_sources,
                 detected_volume=detected_volume,
                 detected_freshness=detected_freshness,

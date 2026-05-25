@@ -7,13 +7,13 @@ from bid_acceleration_engine.utils.logging import get_logger
 
 logger = get_logger(__name__)
 
-# Streaming keywords - ANY match triggers streaming classification
+# Streaming keywords - ANY match (word-boundary) triggers streaming classification
 STREAMING_KEYWORDS = [
     "real-time",
     "streaming",
     "event",
     "continuous",
-    "live",
+    "live stream",
     "kafka",
     "event hub",
     "message queue",
@@ -51,7 +51,8 @@ CLOUD_SOURCES = [
 def detect_streaming(requirements: list[ExtractedRequirement]) -> bool:
     """Detect if requirements indicate streaming data ingestion.
 
-    Returns True if ANY streaming keyword appears in requirement text.
+    Returns True if ANY streaming keyword appears in requirement text (word-boundary matched).
+    Avoids false positives like 'live' in 'go-live' by using regex word boundaries.
 
     Args:
         requirements: List of extracted requirements.
@@ -62,7 +63,7 @@ def detect_streaming(requirements: list[ExtractedRequirement]) -> bool:
     for req in requirements:
         text_lower = req.source_text.lower()
         for keyword in STREAMING_KEYWORDS:
-            if keyword in text_lower:
+            if re.search(r'\b' + re.escape(keyword) + r'\b', text_lower):
                 logger.debug(f"Detected streaming keyword '{keyword}' in: {req.source_text[:80]}")
                 return True
     return False
@@ -86,6 +87,26 @@ def detect_on_premise_sources(requirements: list[ExtractedRequirement]) -> list[
                 sources.add(source.title())
                 logger.debug(f"Detected on-prem source '{source}' in: {req.source_text[:80]}")
     return sorted(list(sources))
+
+
+def detect_all_sources(requirements: list[ExtractedRequirement]) -> list[str]:
+    """Detect all data sources (on-premise and cloud) mentioned in requirements.
+
+    Args:
+        requirements: List of extracted requirements.
+
+    Returns:
+        List of all sources detected (on-prem + cloud, deduplicated).
+    """
+    all_source_keywords = ON_PREMISE_SOURCES + CLOUD_SOURCES
+    found = set()
+    for req in requirements:
+        text_lower = req.source_text.lower()
+        for source in all_source_keywords:
+            if source in text_lower:
+                found.add(source.title())
+                logger.debug(f"Detected source '{source}' in: {req.source_text[:80]}")
+    return sorted(list(found))
 
 
 def detect_data_volume(requirements: list[ExtractedRequirement]) -> str | None:

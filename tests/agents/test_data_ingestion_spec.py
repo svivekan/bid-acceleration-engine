@@ -314,6 +314,27 @@ class TestDataIngestionAgent:
         assert output.shir_config.required is True
 
     # ========================================================================
+    # Test 11: Streaming False Positive (go-live)
+    # ========================================================================
+    def test_streaming_false_positive_go_live(self, agent):
+        """'go-live' project delivery term must not trigger streaming detection."""
+        requirements = [
+            self._make_requirement("Data integration completion within 4 months of go-live"),
+            self._make_requirement("Daily data refresh cycles from source systems"),
+        ]
+
+        result = agent.run(requirements)
+
+        assert result.status == AgentStatus.SUCCESS
+        output = result.output
+
+        # Should NOT detect as streaming (go-live is not a streaming signal)
+        assert output.is_streaming is False
+
+        # Should recommend Fabric or Data Factory (batch, not Event Hubs)
+        assert output.tool in (IngestionTool.FABRIC_PIPELINE, IngestionTool.DATA_FACTORY)
+
+    # ========================================================================
     # Integration Tests with UK RFP Fixtures
     # ========================================================================
     def test_integration_local_council_rfp(self, agent, uk_local_council_requirements):
