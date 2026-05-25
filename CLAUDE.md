@@ -2,13 +2,15 @@
 
 ## Project Overview
 
-A local-first AI pipeline for accelerating government and enterprise bid responses. The system chains discrete agents, each responsible for a stage of bid analysis and response generation.
+A local-first AI pipeline for recommending **Azure data architectures** for government and enterprise data migration RFPs.
 
-**Context:** Built for an **Azure-only consulting company**. This tool helps Azure Solutions Architects rapidly generate Azure-based solution outlines for UK government RFPs (Local Council, NHS, Transport, Education, Water Authority).
+**NOT a general bid response tool.** This is specifically for **data architecture**: recommending how to ingest, transform, store, and consume data on Azure.
 
-**Current Phase:** Phase 3 - Solution Outline Agent (in planning)
+**Context:** Built for an **Azure-only consulting company**. This tool helps Azure Solutions Architects rapidly generate data architecture recommendations for UK government RFPs (Local Council, NHS, Transport, Education, Water Authority).
 
-**Architecture:** 6-agent pipeline, all phases local-first (no external APIs), all solutions Azure-only
+**Current Progress:** Phase 3 complete and validated. Building Phase 4.
+
+**Architecture:** 7-agent pipeline, all phases local-first (no external APIs), all solutions Azure-only
 
 ## Azure Consulting Company Context
 
@@ -22,6 +24,39 @@ This tool is purpose-built for an Azure consulting firm. Key principles:
 - **Patterns-driven:** Leverage Microsoft's reference architectures and best practices.
 
 **Target User:** Azure Solutions Architects responding to government RFPs
+
+## The 7-Phase Data Architecture Pipeline
+
+Each phase builds on the previous one. Output from one phase is input to the next.
+
+| Phase | Agent | Status | Input | Output |
+|-------|-------|--------|-------|--------|
+| 1 | `bid_intake_agent` | ✓ DONE | RFP `.txt` file | `BidDocument` (metadata + raw text) |
+| 2 | `requirement_extraction_agent` | ✓ DONE | `BidDocument` | `ExtractedRequirement[]` (data/integration needs) |
+| 3 | `data_ingestion_agent` | ✓ DONE | Requirements | `IngestionArchitecture` (Event Hubs, Data Factory, SHIR, compliance) |
+| 4 | `transformation_agent` | BUILDING | Ingestion arch + Requirements | `TransformationArchitecture` (ETL, Databricks, quality, lineage) |
+| 5 | `analytics_agent` | TODO | Transformation arch | `AnalyticsArchitecture` (Synapse SQL, Power BI, APIs, security) |
+| 6 | `review_agent` | TODO | All architectures | `ReviewResult` (validated, gaps flagged, compliance confirmed) |
+| 7 | `delivery_plan_agent` | TODO | Validated architecture | `DeliveryPlan` (phased timeline, milestones, team structure) |
+
+**Data Flow:**
+```
+RFP → Phase 1 → BidDocument
+         ↓
+      Phase 2 → Requirements
+         ↓
+      Phase 3 → Ingestion Architecture
+         ↓
+      Phase 4 → Transformation Architecture
+         ↓
+      Phase 5 → Analytics Architecture
+         ↓
+      Phase 6 → Validated Full Architecture
+         ↓
+      Phase 7 → Phased Delivery Plan
+```
+
+**Key Constraint:** Each phase is a pure transformation. No external APIs, no network calls, all processing local-only.
 
 ## Tech Stack
 
@@ -204,7 +239,8 @@ uv run pytest tests/agents/test_bid_intake_agent.py::test_happy_path -v
 ## Notes for Claude
 
 ### General Principles
-- **Local-first principle:** All 6 agents must work entirely offline, no external APIs under any circumstances
+- **Data architecture focus:** This tool is for recommending Azure data solutions, not general bid responses. Each phase answers a specific question: How do we ingest? How do we transform? How do we serve?
+- **Local-first principle:** All 7 agents must work entirely offline, no external APIs under any circumstances
 - **Keep implementation intentionally focused:** Each agent does one thing well, no over-engineering
 - **Validate Pydantic generics early:** `AgentResult[T]` must work before building on top
 - **Mock nothing in tests:** Use real temp files and pytest fixtures
@@ -212,6 +248,7 @@ uv run pytest tests/agents/test_bid_intake_agent.py::test_happy_path -v
 - **Prefer explicit over implicit:** Type hints, docstrings, and clear variable names
 - **Avoid over-engineering:** No abstract base classes beyond what's documented, no premature refactoring
 - **Use Claude Pro subscription only for development guidance:** Never call APIs from running code
+- **Phase sequence matters:** Don't skip phases or reorder them. Phases 4-7 depend on Phases 1-3.
 
 ### Azure-Specific Principles (Phase 3+)
 - **Azure-only solutions:** All Phase 3 solution outlines must recommend Azure services only. No comparative analysis with other clouds.
