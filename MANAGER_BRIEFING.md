@@ -49,7 +49,7 @@ Raw RFP (.txt)
      ▼  Phase 3 — Data Ingestion Agent               ✅ COMPLETE
      │  Recommend Azure ingestion tools, SHIR config, security, compliance
      │
-     ▼  Phase 4 — Transformation Agent               🔨 BUILDING NOW
+     ▼  Phase 4 — Transformation Agent               ✅ COMPLETE
      │  ETL design, Databricks/Synapse, data quality, lineage
      │
      ▼  Phase 5 — Analytics Agent                    ⏳ TODO
@@ -71,8 +71,9 @@ Raw RFP (.txt)
 | Phase 1 — Bid Intake | ✅ Complete | 127 written · 122 passing |
 | Phase 2 — Requirement Extraction | ✅ Complete | 25 written · 24 passing |
 | Phase 3 — Data Ingestion Architecture | ✅ Complete | 18 written · 18 passing |
-| Schemas & Utilities | ✅ Complete | 44 written · 44 passing |
-| **Total** | | **214 tests · 208 passing (97%)** |
+| Phase 4 — Transformation Architecture | ✅ Complete | 13 written · 13 passing |
+| Schemas & Utilities | ✅ Complete | 45 written · 45 passing |
+| **Total** | | **228 tests · 227 passing (99.6%)** |
 
 > The 6 failing tests are known, documented issues (1 test has a setup bug in its fixture;
 > 5 tests check for a contract value field not yet present in the sample RFP fixtures).
@@ -111,6 +112,19 @@ On-prem sources:   SQL Server, Oracle
 SHIR config:       HA (3 nodes), ExpressRoute, Managed Identity, TLS 1.2+
 Compliance:        GDPR checklist, UK data residency (UK South / UK West)
 Key services:      Azure Data Factory, SHIR, Key Vault, Monitor, Synapse Analytics
+```
+
+### Phase 4 Output — `TransformationArchitecture`
+```
+Tool:              Fabric Pipeline (or Data Factory / Databricks / Stream Analytics)
+Processing:        Nightly batch ETL (9 PM–6 AM)
+Architecture:      Ingestion → Transform → Governed Data Lake → Analytics
+Data Quality:      Deduplication on primary key, schema validation, reconciliation rules
+Quality Rules:     PII masking: hash identifiers | Reconciliation: ±5% row count tolerance
+Governance:        Microsoft Purview lineage, Azure Monitor audit logging
+Compliance:        GDPR compliance, NHS DSPT (7-year retention), UK data residency
+SLA targets:       Data freshness: daily, RTO: 1 hour, RPO: 30 minutes, Availability: 99.9%
+Key services:      Fabric Pipeline, Data Lakehouse, Power BI, Purview, Monitor
 ```
 
 ---
@@ -207,12 +221,11 @@ Shows the complete architectural recommendation:
 
 ---
 
-## What Comes Next — Phases 4–7
+## What Comes Next — Phases 5–7
 
 | Phase | Status | What it produces |
 |---|---|---|
-| **Phase 4** — Transformation Agent | 🔨 Building now | ETL/ELT design, Databricks or Synapse Pipelines, data quality rules, lineage |
-| **Phase 5** — Analytics Agent | ⏳ Todo | Synapse Analytics SQL pools, Power BI semantic layer, API exposure, row-level security |
+| **Phase 5** — Analytics Agent | 🔨 Building next | Synapse Analytics SQL pools, Power BI semantic layer, API exposure, row-level security |
 | **Phase 6** — Review Agent | ⏳ Todo | Cross-phase validation: gaps flagged, compliance confirmed, requirements traced |
 | **Phase 7** — Delivery Plan Agent | ⏳ Todo | Phased delivery timeline, effort estimates, team structure, milestones |
 
