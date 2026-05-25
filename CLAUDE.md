@@ -8,7 +8,7 @@ A local-first AI pipeline for recommending **Azure data architectures** for gove
 
 **Context:** Built for an **Azure-only consulting company**. This tool helps Azure Solutions Architects rapidly generate data architecture recommendations for UK government RFPs (Local Council, NHS, Transport, Education, Water Authority).
 
-**Current Progress:** Phase 3 complete and validated. Building Phase 4.
+**Current Progress:** Phases 1-4 complete and validated. Building Phase 5.
 
 **Architecture:** 7-agent pipeline, all phases local-first (no external APIs), all solutions Azure-only
 
@@ -34,8 +34,8 @@ Each phase builds on the previous one. Output from one phase is input to the nex
 | 1 | `bid_intake_agent` | ✓ DONE | RFP `.txt` file | `BidDocument` (metadata + raw text) |
 | 2 | `requirement_extraction_agent` | ✓ DONE | `BidDocument` | `ExtractedRequirement[]` (data/integration needs) |
 | 3 | `data_ingestion_agent` | ✓ DONE | Requirements | `IngestionArchitecture` (Event Hubs, Data Factory, SHIR, compliance) |
-| 4 | `transformation_agent` | BUILDING | Ingestion arch + Requirements | `TransformationArchitecture` (ETL, Databricks, quality, lineage) |
-| 5 | `analytics_agent` | TODO | Transformation arch | `AnalyticsArchitecture` (Synapse SQL, Power BI, APIs, security) |
+| 4 | `transformation_agent` | ✓ DONE | Ingestion arch + Requirements | `TransformationArchitecture` (ETL, Databricks, quality, lineage) |
+| 5 | `analytics_agent` | BUILDING | Transformation arch | `AnalyticsArchitecture` (Synapse SQL, Power BI, APIs, security) |
 | 6 | `review_agent` | TODO | All architectures | `ReviewResult` (validated, gaps flagged, compliance confirmed) |
 | 7 | `delivery_plan_agent` | TODO | Validated architecture | `DeliveryPlan` (phased timeline, milestones, team structure) |
 
