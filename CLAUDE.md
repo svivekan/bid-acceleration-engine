@@ -10,7 +10,7 @@ A local-first AI pipeline for recommending **Azure data architectures** for gove
 
 **Current Progress:** Phases 1-4 complete and validated. Building Phase 5.
 
-**Architecture:** 7-agent pipeline, all phases local-first (no external APIs), all solutions Azure-only
+**Architecture:** 7-agent pipeline, all phases local-first (no API calls from agent code), all solutions Azure-only
 
 ## Azure Consulting Company Context
 
@@ -56,7 +56,7 @@ RFP → Phase 1 → BidDocument
       Phase 7 → Phased Delivery Plan
 ```
 
-**Key Constraint:** Each phase is a pure transformation. No external APIs, no network calls, all processing local-only.
+**Key Constraint:** Each phase is a pure transformation. Agent code must not make external API calls or network requests. All processing must be local-only, deterministic, and rule-based. (Developers may use Claude Code for design and decision-making.)
 
 ## Tech Stack
 
@@ -107,7 +107,7 @@ uv run ruff format src/ tests/
 2. **Import style**: `from bid_acceleration_engine.agents.bid_intake_agent import ...` (not relative imports)
 3. **Use Pydantic for all data structures**: Never use bare dicts for inter-agent communication
 4. **Keep agents pure**: Agents are transformations: input → work → typed output
-5. **No external APIs in Phase 1**: All processing is local-only
+5. **No API calls from agent code**: All processing must be local-only, rule-based, deterministic
 
 ### Linting & Formatting
 
@@ -240,14 +240,14 @@ uv run pytest tests/agents/test_bid_intake_agent.py::test_happy_path -v
 
 ### General Principles
 - **Data architecture focus:** This tool is for recommending Azure data solutions, not general bid responses. Each phase answers a specific question: How do we ingest? How do we transform? How do we serve?
-- **Local-first principle:** All 7 agents must work entirely offline, no external APIs under any circumstances
+- **Local-first principle:** Agent code must not make programmatic API calls. No `anthropic.Anthropic()`, `openai.OpenAI()`, or external service calls from running agents. All processing must be local-only, deterministic, and rule-based. (Claude Code assistance during development is OK; only production agent code is constrained.)
 - **Keep implementation intentionally focused:** Each agent does one thing well, no over-engineering
 - **Validate Pydantic generics early:** `AgentResult[T]` must work before building on top
 - **Mock nothing in tests:** Use real temp files and pytest fixtures
 - **One commit = one complete feature:** Don't leave tests without code or code without tests
 - **Prefer explicit over implicit:** Type hints, docstrings, and clear variable names
 - **Avoid over-engineering:** No abstract base classes beyond what's documented, no premature refactoring
-- **Use Claude Pro subscription only for development guidance:** Never call APIs from running code
+- **Claude Code for development, not for agents:** Use Claude Code (this interface) for design decisions, code review, architecture planning, and intelligent analysis. Agent code itself must never make API calls to Claude, OpenAI, or external services.
 - **Phase sequence matters:** Don't skip phases or reorder them. Phases 4-7 depend on Phases 1-3.
 
 ### Azure-Specific Principles (Phase 3+)
