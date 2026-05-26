@@ -56,7 +56,7 @@ RFP → Phase 1 → BidDocument
       Phase 7 → Phased Delivery Plan
 ```
 
-**Key Constraint:** Each phase is a pure transformation. Agent code must not make external API calls or network requests. All processing must be local-only, deterministic, and rule-based. (Developers may use Claude Code for design and decision-making.)
+**Key Constraint:** Each phase is a pure transformation. Agent code must not make external API calls or network requests. All processing must be local-only, deterministic, and rule-based. Claude Code (this interface) can execute agents in production manually, with intelligent oversight and analysis—the constraint is on agents making autonomous API calls, not on manual execution with human guidance.
 
 ## Tech Stack
 
@@ -240,14 +240,14 @@ uv run pytest tests/agents/test_bid_intake_agent.py::test_happy_path -v
 
 ### General Principles
 - **Data architecture focus:** This tool is for recommending Azure data solutions, not general bid responses. Each phase answers a specific question: How do we ingest? How do we transform? How do we serve?
-- **Local-first principle:** Agent code must not make programmatic API calls. No `anthropic.Anthropic()`, `openai.OpenAI()`, or external service calls from running agents. All processing must be local-only, deterministic, and rule-based. (Claude Code assistance during development is OK; only production agent code is constrained.)
+- **Local-first principle:** Agent code must not make programmatic API calls. No `anthropic.Anthropic()`, `openai.OpenAI()`, or external service calls from running agents. All processing must be local-only, deterministic, and rule-based. Claude Code can execute agents in production manually—the constraint applies to agents making autonomous/unattended API calls, not to human-initiated execution with intelligent guidance.
 - **Keep implementation intentionally focused:** Each agent does one thing well, no over-engineering
 - **Validate Pydantic generics early:** `AgentResult[T]` must work before building on top
 - **Mock nothing in tests:** Use real temp files and pytest fixtures
 - **One commit = one complete feature:** Don't leave tests without code or code without tests
 - **Prefer explicit over implicit:** Type hints, docstrings, and clear variable names
 - **Avoid over-engineering:** No abstract base classes beyond what's documented, no premature refactoring
-- **Claude Code for development, not for agents:** Use Claude Code (this interface) for design decisions, code review, architecture planning, and intelligent analysis. Agent code itself must never make API calls to Claude, OpenAI, or external services.
+- **Claude Code as intelligent agent executor:** Use Claude Code (this interface) to manually execute agents in production, with intelligent analysis of inputs and outputs. Claude Code can refine requirements, validate recommendations, and guide the pipeline. Agent code itself must never make autonomous API calls to Claude, OpenAI, or external services—all external LLM interaction happens at the Claude Code layer, not in the agents.
 - **Phase sequence matters:** Don't skip phases or reorder them. Phases 4-7 depend on Phases 1-3.
 
 ### Azure-Specific Principles (Phase 3+)
