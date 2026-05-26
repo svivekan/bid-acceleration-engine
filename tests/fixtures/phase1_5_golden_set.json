@@ -1,0 +1,266 @@
+{
+  "golden_set_metadata": {
+    "description": "Hand-validated metadata for Phase 1.5 testing. Extracted from actual RFP fixtures by manual review.",
+    "created_date": "2026-05-26",
+    "note": "This is the ground truth for validating Phase 1.5 enhancements."
+  },
+  "fixtures": {
+    "uk_local_council_data_analytics": {
+      "file": "uk_local_council_data_analytics.txt",
+      "phase1_issues": {
+        "title": {
+          "phase1_extracted": "LOCAL AUTHORITY PROCUREMENT NOTICE",
+          "reason": "Phase 1 takes first non-empty line, which is document-type header"
+        },
+        "issuer": {
+          "phase1_extracted": "Metropolitan London Borough Council",
+          "reason": "Phase 1 correctly extracts from 'Contracting Authority:' pattern"
+        }
+      },
+      "golden_truth": {
+        "title": "Integrated Council Data Analytics Platform",
+        "title_source": "solicitation_title_field",
+        "title_line_number": 3,
+        "issuer": "Metropolitan London Borough Council",
+        "issuer_confidence": 0.99,
+        "due_date": "2026-05-15",
+        "due_date_time": "12:00",
+        "due_date_type": "submission_deadline",
+        "due_date_confidence": 1.0,
+        "estimated_contract_value": "£2.8 Million",
+        "contract_duration": "24 months",
+        "key_sections": [
+          "EXECUTIVE SUMMARY",
+          "PROJECT SCOPE",
+          "MANDATORY REQUIREMENTS",
+          "OPTIONAL ENHANCEMENTS",
+          "EVALUATION CRITERIA"
+        ],
+        "mandatory_count": 8,
+        "optional_count": 5
+      }
+    },
+    "uk_nhs_trust_population_health": {
+      "file": "uk_nhs_trust_population_health.txt",
+      "phase1_issues": {
+        "title": {
+          "phase1_extracted": "NHS PROCUREMENT NOTICE",
+          "reason": "First non-empty line is document-type header, not actual title"
+        },
+        "issuer": {
+          "phase1_extracted": "North Regional Health System NHS Trust",
+          "reason": "Phase 1 correctly extracts from 'Contracting Authority:' pattern"
+        }
+      },
+      "golden_truth": {
+        "title": "Integrated Population Health Analytics System",
+        "title_source": "solicitation_title_field",
+        "title_line_number": 3,
+        "issuer": "North Regional Health System NHS Trust",
+        "issuer_confidence": 0.99,
+        "due_date": "2026-04-30",
+        "due_date_time": "16:00",
+        "due_date_type": "submission_deadline",
+        "due_date_confidence": 1.0,
+        "estimated_contract_value": "£3.4 Million",
+        "contract_duration": "30 months",
+        "key_sections": [
+          "OVERVIEW",
+          "PROJECT OBJECTIVES",
+          "MANDATORY REQUIREMENTS",
+          "TECHNICAL SPECIFICATIONS",
+          "OPTIONAL ENHANCEMENTS",
+          "SCORING"
+        ],
+        "mandatory_count": 8,
+        "optional_count": 5
+      }
+    },
+    "uk_transport_network_data_system": {
+      "file": "uk_transport_network_data_system.txt",
+      "phase1_issues": {
+        "title": {
+          "phase1_extracted": "TRANSPORT AUTHORITY PROCUREMENT",
+          "reason": "First line is document-type header, actual title is on line 3"
+        },
+        "section_headings": {
+          "issue": "Line 69 'Evaluation Factors' is title-case, not all-caps, so Phase 1 parser won't detect as section heading",
+          "impact": "Section may be merged with previous content"
+        }
+      },
+      "golden_truth": {
+        "title": "Multi-Modal Transport Network Analytics Platform",
+        "title_source": "solicitation_title_field",
+        "title_line_number": 3,
+        "issuer": "Greater Manchester Transport Authority",
+        "issuer_confidence": 0.99,
+        "due_date": "2026-03-10",
+        "due_date_time": "17:00",
+        "due_date_type": "submission_deadline",
+        "due_date_confidence": 1.0,
+        "estimated_contract_value": "£4.2 Million",
+        "contract_duration": "36 months",
+        "key_sections": [
+          "BACKGROUND",
+          "SCOPE OF WORK",
+          "MANDATORY REQUIREMENTS",
+          "TECHNICAL ARCHITECTURE",
+          "OPTIONAL CAPABILITIES",
+          "Evaluation Factors"
+        ],
+        "mandatory_count": 8,
+        "optional_count": 4,
+        "section_detection_challenge": "Title-case heading 'Evaluation Factors' at line 69 won't be recognized by Phase 1 parser"
+      }
+    },
+    "uk_university_research_data_repository": {
+      "file": "uk_university_research_data_repository.txt",
+      "phase1_issues": {
+        "title": {
+          "phase1_extracted": "HIGHER EDUCATION PROCUREMENT",
+          "reason": "Document-type header on line 1, actual title on line 3"
+        },
+        "issuer": {
+          "phase1_extracted": "Northern Universities Consortium (8 institutions)",
+          "reason": "Compound entity name with parenthetical detail - may be hard to parse"
+        }
+      },
+      "golden_truth": {
+        "title": "Research Data Management and Discovery Platform",
+        "title_source": "solicitation_title_field",
+        "title_line_number": 3,
+        "issuer": "Northern Universities Consortium (8 institutions)",
+        "issuer_confidence": 0.95,
+        "issuer_note": "Compound entity with detail in parentheses. Phase 1 can extract but LLM needed to validate the full name.",
+        "due_date": "2026-05-20",
+        "due_date_time": "16:00",
+        "due_date_type": "submission_deadline",
+        "due_date_confidence": 1.0,
+        "estimated_contract_value": "£1.9 Million",
+        "contract_duration": "24 months (optional 12-month extension)",
+        "key_sections": [
+          "PURPOSE",
+          "TECHNICAL REQUIREMENTS",
+          "EVALUATION CRITERIA",
+          "MANDATORY TECHNICAL SPECS",
+          "OPTIONAL FEATURES"
+        ],
+        "mandatory_count": 7,
+        "optional_count": 5
+      }
+    },
+    "uk_water_authority_environmental_data": {
+      "file": "uk_water_authority_environmental_data.txt",
+      "phase1_issues": {
+        "title": {
+          "phase1_extracted": "WATER AUTHORITY PROCUREMENT",
+          "reason": "Document-type header, actual title on line 3"
+        }
+      },
+      "golden_truth": {
+        "title": "Water Quality and Environmental Monitoring Data Platform",
+        "title_source": "solicitation_title_field",
+        "title_line_number": 3,
+        "issuer": "Thames Valley Water Authority",
+        "issuer_confidence": 0.99,
+        "due_date": "2026-04-02",
+        "due_date_time": "13:00",
+        "due_date_type": "submission_deadline",
+        "due_date_confidence": 1.0,
+        "estimated_contract_value": "£3.1 Million",
+        "contract_duration": "30 months",
+        "key_sections": [
+          "BACKGROUND",
+          "PROJECT OBJECTIVES",
+          "MANDATORY REQUIREMENTS",
+          "TECHNICAL SPECIFICATIONS",
+          "OPTIONAL ENHANCEMENTS",
+          "SCORING"
+        ],
+        "mandatory_count": 8,
+        "optional_count": 6
+      }
+    },
+    "simple_rfp": {
+      "file": "simple_rfp.txt",
+      "type": "US Government RFP",
+      "phase1_issues": {
+        "title": {
+          "phase1_extracted": "REQUEST FOR PROPOSAL: ENTERPRISE CLOUD INFRASTRUCTURE MODERNIZATION",
+          "reason": "Phase 1 correctly extracts - title is first non-empty line"
+        },
+        "issuer": {
+          "phase1_extracted": "General Services Administration (GSA), Office of IT Services",
+          "reason": "Phase 1 correctly extracts from 'Issued by:' pattern"
+        }
+      },
+      "golden_truth": {
+        "title": "ENTERPRISE CLOUD INFRASTRUCTURE MODERNIZATION",
+        "title_source": "first_line",
+        "issuer": "General Services Administration (GSA), Office of IT Services",
+        "issuer_confidence": 0.99,
+        "due_date": "2026-04-15",
+        "due_date_type": "submission_deadline",
+        "due_date_confidence": 0.9,
+        "due_date_note": "Line 6 has 'Closing Date: April 15, 2026'. Line 7 'Due: 2 PM Eastern Time' is missing the date component.",
+        "solicitation_number": "GSA-2026-001",
+        "key_sections": [
+          "SECTION 1: OVERVIEW",
+          "SECTION 2: MANDATORY REQUIREMENTS",
+          "SECTION 3: OPTIONAL REQUIREMENTS",
+          "SECTION 4: EVALUATION CRITERIA"
+        ]
+      }
+    },
+    "complex_rfp": {
+      "file": "complex_rfp.txt",
+      "type": "US Government RFP with complex date patterns",
+      "phase1_issues": {
+        "title": {
+          "phase1_extracted": "RFP - DATA ANALYTICS PLATFORM DEVELOPMENT",
+          "reason": "Phase 1 correctly extracts title part"
+        },
+        "issuer": {
+          "phase1_extracted": "Department of Energy (DOE) - Energy Efficiency & Renewable Energy (EERE)",
+          "reason": "Phase 1 successfully matches 'Contract Agency:' via the 'Agency:' regex pattern (substring match works)"
+        },
+        "due_date": {
+          "phase1_issue": "Multiple dates exist. Line 6 'Posted:', Line 7 'Closing:', Line 8 'Questions Due:' - parser needs to pick the right one"
+        }
+      },
+      "golden_truth": {
+        "title": "DATA ANALYTICS PLATFORM DEVELOPMENT",
+        "title_source": "first_line",
+        "issuer": "Department of Energy (DOE) - Energy Efficiency & Renewable Energy (EERE)",
+        "issuer_confidence": 0.85,
+        "issuer_note": "Uses 'Contract Agency:' pattern (not in Phase 1 parser regex list). Complex name with compound structure.",
+        "due_date": "2026-04-15",
+        "due_date_time": "23:59",
+        "due_date_type": "submission_deadline",
+        "due_date_confidence": 1.0,
+        "due_date_note": "Line 7 'Closing:' is the submission deadline. Line 8 'Questions Due: April 1st' is an earlier cutoff, not the deadline.",
+        "key_sections": [
+          "I. BACKGROUND AND PURPOSE",
+          "II. SCOPE OF WORK",
+          "III. CONTRACTOR QUALIFICATIONS",
+          "IV. TECHNICAL REQUIREMENTS",
+          "v. PRICING AND CONTRACT TERMS",
+          "VI. PROPOSAL SUBMISSION"
+        ],
+        "section_detection_challenge": "Roman numerals with inconsistent capitalization (lowercase 'v' instead of 'V' on line 52)"
+      }
+    }
+  },
+  "summary": {
+    "total_fixtures": 6,
+    "uk_government_rfps": 5,
+    "us_government_rfps": 2,
+    "key_improvements_needed": {
+      "title_extraction": "All 5 UK RFPs have document-type headers as first line. Phase 1 needs to look for 'Solicitation Title:' or equivalent field.",
+      "issuer_extraction": "Compound entity names need validation (Northern Universities Consortium). Phase 1 does recognize 'Contract Agency:' via 'Agency:' substring match.",
+      "date_disambiguation": "complex_rfp.txt has multiple dates (Posted, Closing, Questions Due). Phase 1 needs to pick submission deadline, not first match.",
+      "section_detection": "uk_transport_network_data_system.txt has 'Evaluation Factors' in title case (not all-caps). Phase 1 parser misses non-all-caps headings.",
+      "requirement_categorization": "No fixture shows Phase 1 categorizing MANDATORY vs OPTIONAL. Phase 1.5 needs to tag sections by type."
+    }
+  }
+}
