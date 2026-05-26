@@ -22,6 +22,9 @@ from tempfile import TemporaryDirectory
 
 from bid_acceleration_engine.agents.bid_intake_agent.agent import BidIntakeAgent
 from bid_acceleration_engine.agents.data_ingestion_agent.agent import DataIngestionAgent
+from bid_acceleration_engine.agents.enhanced_bid_intake_agent.agent import (
+    EnhancedBidIntakeAgent,
+)
 from bid_acceleration_engine.agents.requirement_extraction_agent.agent import (
     RequirementExtractionAgent,
 )
@@ -88,6 +91,46 @@ def walkthrough(bid_file_path: str) -> None:
             print(f"   Headings:   {', '.join(headings[:5])}{'...' if len(headings) > 5 else ''}")
 
         # ======================================================================
+        # PHASE 1.5: Enhanced Bid Intake
+        # ======================================================================
+        print(f"\n{'=' * 80}")
+        print("PHASE 1.5: ENHANCED BID INTAKE — Title Correction & Section Classification")
+        print("=" * 80 + "\n")
+
+        enhanced_agent = EnhancedBidIntakeAgent("enhanced_bid_intake_agent")
+
+        print("⏳ Enhancing bid document...")
+        result1_5 = enhanced_agent.run(bid_doc)
+
+        if result1_5.status != AgentStatus.SUCCESS:
+            print(f"❌ Phase 1.5 failed: {result1_5.error_message}")
+            return
+
+        enhanced_doc = result1_5.output
+        print(f"✅ Phase 1.5 complete in {result1_5.duration_seconds:.2f}s\n")
+
+        print("📋 Enhanced Metadata:")
+        print(f"   Title:      {enhanced_doc.metadata.title}")
+        confidence_text = (
+            f"(source: {enhanced_doc.metadata.title_source}, "
+            f"confidence: {enhanced_doc.metadata.title_confidence:.2f})"
+        )
+        print(f"      {confidence_text}")
+        if enhanced_doc.metadata.mandatory_count is not None:
+            print(
+                f"   Requirements: {enhanced_doc.metadata.mandatory_count} mandatory, "
+                f"{enhanced_doc.metadata.optional_count} optional"
+            )
+
+        if enhanced_doc.corrections_applied:
+            print("\n   Corrections Applied:")
+            for correction in enhanced_doc.corrections_applied:
+                print(f"      ✏️  {correction}")
+
+        # Use enhanced_doc for downstream phases (Phase 2, 3, 4)
+        bid_doc = enhanced_doc
+
+        # ======================================================================
         # PHASE 2: Extract and classify requirements
         # ======================================================================
         print(f"\n{'=' * 80}")
@@ -143,9 +186,7 @@ def walkthrough(bid_file_path: str) -> None:
         for i, req in enumerate(requirements[:3], 1):
             text = req.source_text[:90] + ("..." if len(req.source_text) > 90 else "")
             req_type = "Mandatory" if req.mandatory else "Optional"
-            print(
-                f"\n  #{i}  [{req.category.value}] [{req.priority.value}] [{req_type}]"
-            )
+            print(f"\n  #{i}  [{req.category.value}] [{req.priority.value}] [{req_type}]")
             print(f"       {text}")
 
         # ======================================================================
@@ -210,11 +251,7 @@ def walkthrough(bid_file_path: str) -> None:
             print("SHIR CONFIGURATION (Self-Hosted Integration Runtime)")
             print("=" * 80)
             print(f"   Placement:          {shir.placement}")
-            ha_text = (
-                f"Yes — {shir.ha_nodes} nodes"
-                if shir.ha_required
-                else "No — single node"
-            )
+            ha_text = f"Yes — {shir.ha_nodes} nodes" if shir.ha_required else "No — single node"
             print(f"   High Availability:  {ha_text}")
             print(f"   Network Security:   {shir.network_security_layer}")
             print(f"   Authentication:     {shir.authentication_method}")
