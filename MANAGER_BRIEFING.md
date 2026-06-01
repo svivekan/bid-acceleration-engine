@@ -65,6 +65,62 @@ Raw RFP (.txt / .pdf / .docx)
         Phased timeline, milestones, team structure
 ```
 
+### Development Environment: Claude Code + VS Code
+
+This project uses **Claude Code** (Anthropic's AI-powered coding assistant) integrated with **VS Code** (Visual Studio Code) as the primary development environment. This combination accelerates development velocity while maintaining code quality.
+
+**Claude Code Installation & Setup**
+
+Claude Code can be installed via multiple distribution channels:
+- **CLI:** `npm install -g @anthropic-ai/claude-code` (command-line access)
+- **VS Code Plugin:** Install from VS Code Extension Marketplace (integrated IDE experience)
+- **Web:** claude.ai/code (browser-based, no local setup required)
+- **Desktop:** Available on macOS and Windows
+
+For this project, the VS Code plugin was chosen for **seamless IDE integration**.
+
+**Account Linking Process**
+
+1. Install Claude Code via VS Code Extension Marketplace
+2. Open the extension and authenticate with your Anthropic account (Claude Pro subscription)
+3. Authorization grants the extension access to Claude models (Opus, Sonnet, Haiku)
+4. API tokens are stored securely in your local credential store (no plaintext)
+
+**VS Code Plugin Benefits for Azure Architecture Development**
+
+| Capability | Why it Matters |
+|---|---|
+| **Inline Code Assistance** | Write and refactor Python agents without context switching; Claude reviews your code in real-time |
+| **File Context** | Select files/folders and ask Claude to analyze patterns, refactor, or generate tests — all within VS Code |
+| **Git Integration** | Claude can read git history, review diffs, generate commit messages, propose PRs |
+| **Terminal Integration** | Run `uv run pytest` and ask Claude to debug test failures without leaving the editor |
+| **Rapid Iteration** | Edit schemas → run tests → ask Claude "why is this test failing?" → fix → repeat (minutes, not hours) |
+
+**Workflow Example: Adding a New Requirement Field**
+
+1. Edit `src/bid_acceleration_engine/schemas/requirements.py` (add new field)
+2. Highlight the file in VS Code and ask Claude: "Add tests for this new field"
+3. Claude generates test cases in `tests/schemas/test_requirements.py`
+4. Run `uv run pytest tests/schemas/test_requirements.py`
+5. If tests fail, select the error and ask Claude: "Why is this failing?"
+6. Claude reads the code, identifies the issue, proposes a fix
+7. Commit with Claude-assisted commit message
+
+This cycle takes ~3–5 minutes with Claude Code; without it, it would take 20+ minutes of manual coding, testing, and debugging.
+
+**Why Not Just Use Claude.ai Manually?**
+
+Claude.ai (web interface) requires:
+- Copy/paste code into the browser (context loss, security friction)
+- Manual re-reading of file structures between questions
+- Manual file edits based on Claude's suggestions
+
+The VS Code plugin eliminates this friction: Claude **sees** your code, **understands** your project structure, and **executes** changes in your actual codebase.
+
+**Result:** Development velocity increases 3–4×. Phases 1–4 were built and validated in ~4 weeks using this setup.
+
+---
+
 ### Why Python and `uv`
 
 **Python** was chosen as the implementation language for three reasons:
