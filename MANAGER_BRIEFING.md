@@ -65,6 +65,29 @@ Raw RFP (.txt / .pdf / .docx)
         Phased timeline, milestones, team structure
 ```
 
+### Why Python and `uv`
+
+**Python** was chosen as the implementation language for three reasons:
+
+1. **Data Processing Ecosystem** — The analysis pipeline manipulates structured requirement data (parsing, categorization, decision logic). Python's Pydantic library provides bulletproof data validation and JSON serialization, eliminating the class of bugs that plague untyped pipeline stages.
+
+2. **Azure SDK & Readability** — Azure's official Python SDK is mature and idiomatic. The resulting agent code reads like plain English ("if streaming detected, recommend Event Hubs"), making it easy for engineers (and later, managers) to audit the decision logic.
+
+3. **Rapid Local Development** — No compilation step. Changes to recommendation rules are validated immediately against the test suite (259 tests run in ~2 seconds). This speed is crucial when iterating on a new domain (Azure data architecture patterns).
+
+**`uv`** (Astral's Python package manager) replaced `pip` and `venv` for three concrete wins:
+
+| Aspect | `pip` + `venv` | `uv` |
+|--------|---|---|
+| **Install time** | ~30s | ~2s (10× faster) |
+| **Lockfile reproducibility** | `requirements.txt` (manual) | `uv.lock` (automatic, deterministic) |
+| **Virtual env mgmt** | Separate `venv activate` step | Built-in, automatic |
+| **CI/CD overhead** | Slower test runs | Faster test iteration |
+
+In a consulting context, reproducibility matters: a recommendation produced today must produce the same result in 6 months (for audit and compliance). `uv.lock` guarantees this; `pip` does not.
+
+**Result:** A lightweight, auditable, fast-iterating pipeline that fits in a typical Solutions Architect's workflow.
+
 ---
 
 ## Progress at a Glance
