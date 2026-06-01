@@ -9,7 +9,8 @@ from bid_acceleration_engine.agents.base import BaseAgent
 from bid_acceleration_engine.agents.bid_intake_agent import parsers
 from bid_acceleration_engine.schemas.bid import BidDocument, BidMetadata
 from bid_acceleration_engine.schemas.results import AgentResult
-from bid_acceleration_engine.utils.file_io import read_text_file, write_json
+from bid_acceleration_engine.utils.document_reader import read_document
+from bid_acceleration_engine.utils.file_io import write_json
 
 
 class BidIntakeAgent(BaseAgent):
@@ -32,7 +33,7 @@ class BidIntakeAgent(BaseAgent):
         """Parse a bid document and write results to JSON.
 
         Args:
-            source_path: Path to the source .txt bid document.
+            source_path: Path to the source bid document (.txt, .docx, or .pdf).
             output_path: Path where to write the JSON output.
 
         Returns:
@@ -41,8 +42,8 @@ class BidIntakeAgent(BaseAgent):
         start_time = time.time()
 
         try:
-            # Read the bid document
-            raw_text = read_text_file(source_path)
+            # Read the bid document (supports .txt, .docx, .pdf)
+            raw_text = read_document(source_path)
 
             # Extract metadata
             title = parsers.extract_title(raw_text)
