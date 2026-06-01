@@ -50,6 +50,10 @@ def extract_submission_deadline(raw_text: str) -> tuple[datetime | None, str | N
                 # Strip ordinal suffixes (1st, 2nd, 3rd, 4th, etc.)
                 date_str = re.sub(r"(\d+)(st|nd|rd|th)", r"\1", date_str)
 
+                # Strip time components and UTC/EST/etc. indicators
+                # E.g., "15 April, 2026 at 23:59 UTC" becomes "15 April, 2026"
+                date_str = re.sub(r"\s+(at|by|@)\s+.*", "", date_str, flags=re.IGNORECASE)
+
                 # Try to parse the date
                 parsed = parse_date_string(date_str)
                 if parsed:

@@ -39,6 +39,8 @@ def parse_date_string(raw: str) -> date | None:
         "%d/%m/%Y",   # 15/03/2026
         "%d %B %Y",   # 15 May 2026 (UK format)
         "%d %b %Y",   # 15 May 2026 (UK format, abbreviated)
+        "%d %B, %Y",  # 15 April, 2026 (UK format with comma)
+        "%d %b, %Y",  # 15 Apr, 2026 (UK format abbreviated with comma)
     ]
 
     for fmt in formats:

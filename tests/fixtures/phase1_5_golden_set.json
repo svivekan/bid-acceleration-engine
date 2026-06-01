@@ -109,7 +109,7 @@
           "Evaluation Factors"
         ],
         "mandatory_count": 8,
-        "optional_count": 4,
+        "optional_count": 5,
         "section_detection_challenge": "Title-case heading 'Evaluation Factors' at line 69 won't be recognized by Phase 1 parser"
       }
     },
@@ -178,7 +178,7 @@
           "SCORING"
         ],
         "mandatory_count": 8,
-        "optional_count": 6
+        "optional_count": 5
       }
     },
     "simple_rfp": {

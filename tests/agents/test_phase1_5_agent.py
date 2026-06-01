@@ -194,9 +194,9 @@ class TestPhase1_5EnhancementAgent:
         [
             ("uk_local_council_data_analytics", 8, 5),
             ("uk_nhs_trust_population_health", 8, 5),
-            ("uk_transport_network_data_system", 8, 4),
+            ("uk_transport_network_data_system", 8, 5),
             ("uk_university_research_data_repository", 7, 5),
-            ("uk_water_authority_environmental_data", 8, 6),
+            ("uk_water_authority_environmental_data", 8, 5),
         ],
     )
     def test_requirement_counts_match_golden_set(
