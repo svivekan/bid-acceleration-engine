@@ -326,3 +326,86 @@ def test_bid_intake_agent_uk_rfps_are_json_serializable(agent, tmp_output_dir, f
     assert recovered_doc.metadata.issuer == original_doc.metadata.issuer
     assert recovered_doc.metadata.due_date == original_doc.metadata.due_date
     assert len(recovered_doc.sections) == len(original_doc.sections)
+
+
+def test_bid_intake_agent_processes_pdf_document(agent, tmp_output_dir):
+    """Test that Phase 1.5 successfully processes PDF documents."""
+    fixtures_dir = Path(__file__).parent.parent / "fixtures" / "sample_bids"
+    pdf_path = fixtures_dir / "test_rfp_document.pdf"
+    output_path = tmp_output_dir / "output_pdf.json"
+
+    # Verify fixture exists
+    assert pdf_path.exists(), "PDF test fixture not found"
+
+    # Run agent
+    result = agent.run(pdf_path, output_path)
+
+    # Verify success
+    assert result.status == AgentStatus.SUCCESS
+    assert result.output is not None
+    assert isinstance(result.output, BidDocument)
+
+    # Verify metadata extraction
+    doc = result.output
+    assert doc.metadata.title != ""
+    assert doc.metadata.word_count > 0
+    assert doc.metadata.source_file == pdf_path
+    assert doc.metadata.ingested_at is not None
+
+    # Verify sections extracted
+    assert len(doc.sections) > 0
+    assert doc.raw_text != ""
+
+    # Verify JSON serialization
+    assert output_path.exists()
+    recovered_doc = BidDocument.model_validate_json(output_path.read_text())
+    assert recovered_doc.id == doc.id
+
+
+def test_bid_intake_agent_processes_docx_document(agent, tmp_output_dir):
+    """Test that Phase 1.5 successfully processes DOCX documents."""
+    fixtures_dir = Path(__file__).parent.parent / "fixtures" / "sample_bids"
+    docx_path = fixtures_dir / "test_rfp_document.docx"
+    output_path = tmp_output_dir / "output_docx.json"
+
+    # Verify fixture exists
+    assert docx_path.exists(), "DOCX test fixture not found"
+
+    # Run agent
+    result = agent.run(docx_path, output_path)
+
+    # Verify success
+    assert result.status == AgentStatus.SUCCESS
+    assert result.output is not None
+    assert isinstance(result.output, BidDocument)
+
+    # Verify metadata extraction
+    doc = result.output
+    assert doc.metadata.title != ""
+    assert doc.metadata.word_count > 0
+    assert doc.metadata.source_file == docx_path
+    assert doc.metadata.ingested_at is not None
+
+    # Verify sections extracted
+    assert len(doc.sections) > 0
+    assert doc.raw_text != ""
+
+    # Verify JSON serialization
+    assert output_path.exists()
+    recovered_doc = BidDocument.model_validate_json(output_path.read_text())
+    assert recovered_doc.id == doc.id
+
+
+def test_bid_intake_agent_handles_unsupported_format(agent, tmp_output_dir):
+    """Test that agent handles unsupported file formats gracefully."""
+    # Create an unsupported file
+    unsupported_path = tmp_output_dir / "document.xlsx"
+    unsupported_path.write_text("This is not a valid format")
+    output_path = tmp_output_dir / "output.json"
+
+    result = agent.run(unsupported_path, output_path)
+
+    assert result.status == AgentStatus.FAILURE
+    assert result.output is None
+    assert result.error_message is not None
+    assert "Unsupported" in result.error_message or "format" in result.error_message
